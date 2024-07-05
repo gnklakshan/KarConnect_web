@@ -104,8 +104,8 @@ const menuGroups = [
         label: "Manage",
         route: "#",
         children: [
-          { label: "Add Vehicle", route: "/manage/add-vehicle-form-elements" },
-          { label: "Manage Availability", route: "/manage/add-vehicle-form-layout" },
+          { label:  "Manage Availability", route: "/manage/add-vehicle-form-elements" },
+          { label:"Add Vehicle", route: "/manage/add-vehicle-form-layout" },
         ],
       },
       
