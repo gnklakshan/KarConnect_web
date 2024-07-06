@@ -1,8 +1,8 @@
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
-
 import { Metadata } from "next";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import SelectGroupOne from "@/components/SelectGroup/SelectGroupOne";
+
 import Link from "next/link";
 
 export const metadata: Metadata = {
@@ -143,20 +143,44 @@ const FormLayout = () => {
 
                   <div className="mb-4.5">
                     <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                      Contract Number
+                      Vehicle Number
                     </label>
                     <input
                       type="text"
-                      placeholder="Contract Number"
+                      placeholder="Vehicle Number"
                       className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     />
                   </div>
 
                   <SelectGroupOne />
 
-                  <div className="mb-6">
+                  {/* <!-- File upload --> */}
+                  <div className="w-full xl:w-1/2">
                     <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                      Message
+                      Upload Images
+                    </label>
+                  </div>
+                  <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+                    <div className="flex flex-col gap-1.5 p-3.5">
+                      <div>
+                        <input
+                          type="file"
+                          className="w-full rounded-md border border-stroke p-3 outline-none transition file:mr-4 file:rounded file:border-[0.5px] file:border-stroke file:bg-[#EEEEEE] file:px-2.5 file:py-1 file:text-sm focus:border-primary file:focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:file:border-strokedark dark:file:bg-white/30 dark:file:text-white"
+                        />
+                      </div>
+                      <div>
+
+                        <input
+                          type="file"
+                          className="w-full rounded-md border border-stroke p-3 outline-none transition file:mr-4 file:rounded file:border-[0.5px] file:border-stroke file:bg-[#EEEEEE] file:px-2.5 file:py-1 file:text-sm focus:border-primary file:focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:file:border-strokedark dark:file:bg-white/30 dark:file:text-white"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="mb-6 gap-1.5">
+                    <label className="mb-3 block text-sm font-medium text-black dark:text-white ">
+                      Description
                     </label>
                     <textarea
                       rows={6}

@@ -13,7 +13,7 @@ const chatData: Chat[] = [
   },
   {
     avatar: "/images/user/user-02.png",
-    name: "Henry Fisher",
+    name: "Henry Fisher",  
     text: "Waiting for you!",
     time: 12,
     textCount: 0,
@@ -38,6 +38,14 @@ const chatData: Chat[] = [
   {
     avatar: "/images/user/user-01.png",
     name: "Jhon Doe",
+    text: "How are you?",
+    time: 32,
+    textCount: 0,
+    dot: 3,
+  },
+  {
+    avatar: "/images/user/user-01.png",
+    name: "Jhon Doe11111",
     text: "How are you?",
     time: 32,
     textCount: 0,
