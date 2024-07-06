@@ -27,7 +27,7 @@ const ECommerce: React.FC = () => {
           Add Vehicle
         </Link>
         <Link
-          href="#"
+          href="/manage/booking"
           className="inline-flex items-center justify-center rounded-md  bg-meta-8 px-10 py-3 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10"
         >
           View Request
