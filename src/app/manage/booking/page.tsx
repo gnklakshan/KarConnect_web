@@ -4,6 +4,7 @@ import { Metadata } from "next";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 
 // export const metadata: Metadata = {
 //   title: "Booking | KarConnect",
@@ -38,8 +39,9 @@ const bookingpage: React.FC = () => {
   return (
     <DefaultLayout>
       <div className="container mx-auto px-4 py-8">
+      <Breadcrumb pageName="Booking Manage" />
         <main className="mt-10">
-          <h1 className="text-meta-5 text-3xl font-bold mb-6">Booking Management</h1>
+          {/* <h1 className="text-meta-5 text-3xl font-bold mb-6">Booking Management</h1> */}
 
           <section className="bg-white p-6 rounded-lg shadow mb-8 dark:border-strokedark dark:bg-boxdark">
             <h2 className="text-meta-5 text-2xl font-bold mb-4">Overview</h2>

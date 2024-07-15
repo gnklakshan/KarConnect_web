@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import { Metadata } from "next";
 import Link from "next/link";
+import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 
 
 interface Vehicle {
@@ -55,8 +56,9 @@ const VehicleManagement: React.FC = () => {
 
   return (
     <DefaultLayout>
+      <Breadcrumb pageName="Vehicle Management" />
       <div className="container mx-auto p-5">
-        <h1 className="text-2xl font-bold text-gray-800 mb-5">KarConnect Vehicle Management</h1>
+        {/* <h1 className="text-2xl font-bold text-gray-800 mb-5">KarConnect Vehicle Management</h1> */}
         <div className="flex flex-wrap justify-between mb-5">
           <input
             type="text"
