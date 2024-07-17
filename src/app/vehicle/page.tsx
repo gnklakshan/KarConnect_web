@@ -20,9 +20,9 @@ interface Vehicle {
 
 const VehicleManagement: React.FC = () => {
   const [vehicles, setVehicles] = useState<Vehicle[]>([
-    { id: 1, make: 'Toyota', model: 'Camry', year: 2020, type: 'Sedan', licensePlate: 'ABC123', dailyRate: 50, isAvailable: true },
-    { id: 2, make: 'Honda', model: 'CR-V', year: 2019, type: 'SUV', licensePlate: 'XYZ789', dailyRate: 65, isAvailable: false },
-    { id: 3, make: 'Ford', model: 'F-150', year: 2021, type: 'Truck', licensePlate: 'DEF456', dailyRate: 80, isAvailable: true },
+    { id: 1, make: 'Toyota', model: 'Camry', year: 2020, type: 'Sedan', licensePlate: 'ABC123', dailyRate: 5000, isAvailable: true },
+    { id: 2, make: 'Honda', model: 'CR-V', year: 2019, type: 'SUV', licensePlate: 'XYZ789', dailyRate: 6500, isAvailable: false },
+    { id: 3, make: 'Ford', model: 'F-150', year: 2021, type: 'Truck', licensePlate: 'DEF456', dailyRate: 8000, isAvailable: true },
   ]);
   const [searchQuery, setSearchQuery] = useState("");
   const [typeFilter, setTypeFilter] = useState("");
@@ -117,7 +117,7 @@ const VehicleManagement: React.FC = () => {
                 <td className="p-3">{vehicle.make} {vehicle.model} ({vehicle.year})</td>
                 <td className="p-3">{vehicle.type}</td>
                 <td className="p-3">{vehicle.licensePlate}</td>
-                <td className="p-3">${vehicle.dailyRate}</td>
+                <td className="p-3">Rs.{vehicle.dailyRate}</td>
                 <td className="p-3">
                   <label className="flex items-center space-x-2">
                     <input

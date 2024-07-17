@@ -36,6 +36,26 @@ const bookingpage: React.FC = () => {
     applyFilters('all', 'all', '');
   }, []);
 
+  const handleConfirm = (bookingId: number) => {
+    if (window.confirm("Are you sure you want to confirm this booking?")) {
+      setFilteredBookings(prevBookings =>
+        prevBookings.map(booking =>
+          booking.id === bookingId ? { ...booking, status: "confirmed" } : booking
+        )
+      );
+    }
+  };
+
+  const handleCancel = (bookingId: number) => {
+    if (window.confirm("Are you sure you want to cancel this booking?")) {
+      setFilteredBookings(prevBookings =>
+        prevBookings.map(booking =>
+          booking.id === bookingId ? { ...booking, status: "cancelled" } : booking
+        )
+      );
+    }
+  };
+
   return (
     <DefaultLayout>
       <div className="container mx-auto px-4 py-8">
@@ -98,10 +118,14 @@ const bookingpage: React.FC = () => {
                     {booking.status === 'pending' && (
                       <>
                         <Link href="#">
-                          <button className="px-4 py-2 bg-success-color text-white  rounded bg-green-500">Confirm</button>
+                          <button className="px-4 py-2 bg-success-color text-white  rounded bg-green-500" onClick={() => handleConfirm(booking.id)}>
+                            Confirm
+                            </button>
                         </Link>
                         <Link href="#">
-                          <button className="px-4 py-2 bg-danger-color text-white rounded  bg-red">Cancel</button>
+                          <button className="px-4 py-2 bg-danger-color text-white rounded  bg-red" onClick={() => handleCancel(booking.id)}> 
+                            Cancel
+                            </button>
                         </Link>
                       </>
                     )}
