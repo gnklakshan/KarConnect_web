@@ -1,14 +1,12 @@
 "use client";
-import React, { useState } from "react";
+import React from "react";
 
-const SelectGroupOne: React.FC = () => {
-  const [selectedOption, setSelectedOption] = useState<string>("");
-  const [isOptionSelected, setIsOptionSelected] = useState<boolean>(false);
+interface SelectGroupOneProps {
+  selectedBrand: string;
+  onBrandChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+}
 
-  const changeTextColor = () => {
-    setIsOptionSelected(true);
-  };
-
+const SelectGroupOne: React.FC<SelectGroupOneProps> = ({ selectedBrand, onBrandChange }) => {
   return (
     <div className="mb-4.5">
       <label className="mb-2.5 block text-black dark:text-white">
@@ -18,26 +16,33 @@ const SelectGroupOne: React.FC = () => {
 
       <div className="relative z-20 bg-transparent dark:bg-form-input">
         <select
-          value={selectedOption}
-          onChange={(e) => {
-            setSelectedOption(e.target.value);
-            changeTextColor();
-          }}
+          name="brand"
+          value={selectedBrand}
+          onChange={onBrandChange}
           className={`relative z-20 w-full appearance-none rounded border border-stroke bg-transparent px-5 py-3 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary ${
-            isOptionSelected ? "text-black dark:text-white" : ""
+            selectedBrand ? "text-black dark:text-white" : ""
           }`}
         >
           <option value="" disabled className="text-body dark:text-bodydark">
-            Select your subject
+            Select Car Brand
           </option>
-          <option value="USA" className="text-body dark:text-bodydark">
-            USA
+          <option value="Audi" className="text-body dark:text-bodydark">
+            Audi
           </option>
-          <option value="UK" className="text-body dark:text-bodydark">
-            UK
+          <option value="BMW" className="text-body dark:text-bodydark">
+            BMW
           </option>
-          <option value="Canada" className="text-body dark:text-bodydark">
-            Canada
+          <option value="Jaguar" className="text-body dark:text-bodydark">
+            Jaguar
+          </option>
+          <option value="Mercedes" className="text-body dark:text-bodydark">
+            Mercedes
+          </option>
+          <option value="Nissan" className="text-body dark:text-bodydark">
+            Nissan
+          </option>
+          <option value="Toyota" className="text-body dark:text-bodydark">
+            Toyota
           </option>
         </select>
 
