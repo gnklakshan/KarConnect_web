@@ -5,6 +5,7 @@ import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import Link from "next/link";
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import "../../../firebaseConfig";
+import { metadata } from "./metadatabooking";
 
 interface BookingData {
   id: string;
@@ -59,7 +60,7 @@ const BookingPage: React.FC = () => {
 
   useEffect(() => {
     const db = getFirestore();
-
+    document.title = metadata.title;
     const fetchBookingData = async () => {
       try {
         const querySnapshot = await getDocs(collection(db, 'current_rent'));
