@@ -1,56 +1,68 @@
-"use client"
+"use client";  // This directive makes the component a Client Component
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
-import { Metadata } from "next";
+import { metadata } from "./vehicleManagementMetaData";
 import Link from "next/link";
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
-
+import { collection, deleteDoc, getFirestore, getDocs, doc, updateDoc } from 'firebase/firestore';
+import "../../firebaseConfig"; // Adjust the import path as needed
 
 interface Vehicle {
-  id: number;
-  make: string;
-  model: string;
-  year: number;
+  id: string; // Document ID from Firestore
+  Availability: number; // 0 or 1 for availability
+  brand: string;
+  name: string;
+  owner: string;
+  price: number;
   type: string;
-  licensePlate: string;
-  dailyRate: number;
-  isAvailable: boolean;
+  vehicle_no: string;
 }
 
 const VehicleManagement: React.FC = () => {
-  const [vehicles, setVehicles] = useState<Vehicle[]>([
-    { id: 1, make: 'Toyota', model: 'Camry', year: 2020, type: 'Sedan', licensePlate: 'ABC123', dailyRate: 5000, isAvailable: true },
-    { id: 2, make: 'Honda', model: 'CR-V', year: 2019, type: 'SUV', licensePlate: 'XYZ789', dailyRate: 6500, isAvailable: false },
-    { id: 3, make: 'Ford', model: 'F-150', year: 2021, type: 'Truck', licensePlate: 'DEF456', dailyRate: 8000, isAvailable: true },
-  ]);
+  document.title = metadata.title;
+  const [vehicles, setVehicles] = useState<Vehicle[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [typeFilter, setTypeFilter] = useState("");
   const [availabilityFilter, setAvailabilityFilter] = useState("");
 
-  const updateAvailability = (vehicle: Vehicle) => {
-    const updatedVehicles = vehicles.map(v =>
-      v.id === vehicle.id ? { ...v, isAvailable: !v.isAvailable } : v
-    );
-    setVehicles(updatedVehicles);
+  const db = getFirestore();
+
+  // Fetch vehicles from Firestore
+  useEffect(() => {
+    const fetchVehicles = async () => {
+      const vehicleCollection = collection(db, "vehicle_db");
+      const vehicleSnapshot = await getDocs(vehicleCollection);
+      const vehicleList = vehicleSnapshot.docs.map(doc => ({
+        id: doc.id,
+        ...(doc.data() as Omit<Vehicle, 'id'>), // Ensure the correct types are applied
+      })) as Vehicle[];
+      setVehicles(vehicleList);
+    };
+
+    fetchVehicles();
+  }, [db]);
+
+  const updateAvailability = async (vehicle: Vehicle) => {
+    const vehicleDocRef = doc(db, "vehicle_db", vehicle.id);
+    await updateDoc(vehicleDocRef, { Availability: vehicle.Availability === 0 ? 1 : 0 });
+    setVehicles(vehicles.map(v => v.id === vehicle.id ? { ...v, Availability: vehicle.Availability === 0 ? 1 : 0 } : v));
   };
 
-  const editVehicle = (vehicle: Vehicle) => {
-    console.log(`Editing vehicle: ${vehicle.make} ${vehicle.model}`);
-  };
-
-  const deleteVehicle = (vehicle: Vehicle) => {
-    if (confirm(`Are you sure you want to delete ${vehicle.make} ${vehicle.model}?`)) {
+  const deleteVehicle = async (vehicle: Vehicle) => {
+    if (confirm(`Are you sure you want to delete ${vehicle.name}?`)) {
+      const vehicleDocRef = doc(db, "vehicle_db", vehicle.id);
+      await deleteDoc(vehicleDocRef);
       setVehicles(vehicles.filter(v => v.id !== vehicle.id));
     }
   };
 
   const filteredVehicles = vehicles.filter(vehicle => {
-    const matchesSearch = vehicle.make.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      vehicle.model.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      vehicle.licensePlate.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesSearch = vehicle.brand.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      vehicle.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      vehicle.vehicle_no.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesType = typeFilter === '' || vehicle.type === typeFilter;
-    const matchesAvailability = availabilityFilter === '' || vehicle.isAvailable.toString() === availabilityFilter;
+    const matchesAvailability = availabilityFilter === '' || vehicle.Availability.toString() === availabilityFilter;
     return matchesSearch && matchesType && matchesAvailability;
   });
 
@@ -58,7 +70,6 @@ const VehicleManagement: React.FC = () => {
     <DefaultLayout>
       <Breadcrumb pageName="Vehicle Management" />
       <div className="container mx-auto p-5">
-        {/* <h1 className="text-2xl font-bold text-gray-800 mb-5">KarConnect Vehicle Management</h1> */}
         <div className="flex flex-wrap justify-between mb-5">
           <input
             type="text"
@@ -85,28 +96,22 @@ const VehicleManagement: React.FC = () => {
             onChange={(e) => setAvailabilityFilter(e.target.value)}
           >
             <option value="">All Availabilities</option>
-            <option value="true">Available</option>
-            <option value="false">Unavailable</option>
+            <option value="1">Available</option>
+            <option value="0">Unavailable</option>
           </select>
         </div>
-        <Link
-          href="/manage/add-vehicle"
-        >
+        <Link href="/manage/add-vehicle">
           <button className="bg-green-500 text-white py-2 px-4 rounded mb-5 hover:bg-green-600">
             Add New Vehicle
-
           </button>
         </Link>
-
-
-
-        <table className="w-full bg-white shadow-md rounded  dark:border-strokedark dark:bg-boxdark">
+        <table className="w-full bg-black shadow-md rounded">
           <thead>
             <tr className="bg-gray-100 border-b">
               <th className="text-left p-3">Vehicle</th>
               <th className="text-left p-3">Type</th>
               <th className="text-left p-3">License Plate</th>
-              <th className="text-left p-3">Daily Rate</th>
+              <th className="text-left p-3">Price</th>
               <th className="text-left p-3">Availability</th>
               <th className="text-left p-3">Actions</th>
             </tr>
@@ -114,27 +119,27 @@ const VehicleManagement: React.FC = () => {
           <tbody>
             {filteredVehicles.map(vehicle => (
               <tr key={vehicle.id} className="border-b hover:bg-gray-50">
-                <td className="p-3">{vehicle.make} {vehicle.model} ({vehicle.year})</td>
+                <td className="p-3">{vehicle.brand} {vehicle.name}</td>
                 <td className="p-3">{vehicle.type}</td>
-                <td className="p-3">{vehicle.licensePlate}</td>
-                <td className="p-3">Rs.{vehicle.dailyRate}</td>
+                <td className="p-3">{vehicle.vehicle_no}</td>
+                <td className="p-3">Rs.{vehicle.price}</td>
                 <td className="p-3">
                   <label className="flex items-center space-x-2">
                     <input
                       type="checkbox"
                       className="toggle-checkbox"
-                      checked={vehicle.isAvailable}
+                      checked={vehicle.Availability === 1}
                       onChange={() => updateAvailability(vehicle)}
                     />
-                    <span className={`status-indicator ${vehicle.isAvailable ? 'bg-green-500' : 'bg-red'}`} />
-                    {vehicle.isAvailable ? 'Available' : 'Unavailable'}
+                    <span className={`status-indicator ${vehicle.Availability === 1 ? 'bg-green-500' : 'bg-red'}`} />
+                    {vehicle.Availability === 1 ? 'Available' : 'Unavailable'}
                   </label>
                 </td>
                 <td className="p-3">
                   <div className="flex space-x-2">
                     <button
                       className="bg-blue-500 text-white py-1 px-2 rounded hover:bg-blue-600"
-                      onClick={() => editVehicle(vehicle)}
+                      // onClick={() => editVehicle(vehicle)}
                     >
                       <i className="fas fa-edit"></i> Edit
                     </button>

@@ -21,6 +21,7 @@ const FormLayout = () => {
     brand:'',
     description:'',
     image:'',
+    Availability:'',
   });
 
   const handleChange = (e: { target: { name: string; value: string; }; }) => {
@@ -47,6 +48,7 @@ const FormLayout = () => {
         price: Number(formData.price),
         type: formData.vehicleType,
         vehicle_no: formData.vehicleNumber,
+        Availability:1,
         createdAt: new Date() 
       });
       alert('Vehicle added successfully!');
@@ -59,7 +61,8 @@ const FormLayout = () => {
         price: '',
         description: '',
         brand: '',
-        image: ''
+        image: '',
+        Availability:'',
       });
     }catch (error) {
       console.error("Error adding vehicle: ", error);
