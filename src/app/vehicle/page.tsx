@@ -1,4 +1,4 @@
-"use client";  // This directive makes the component a Client Component
+"use client"; 
 
 import React, { useState, useEffect } from "react";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
@@ -6,11 +6,11 @@ import { metadata } from "./vehicleManagementMetaData";
 import Link from "next/link";
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import { collection, deleteDoc, getFirestore, getDocs, doc, updateDoc } from 'firebase/firestore';
-import "../../firebaseConfig"; // Adjust the import path as needed
+import "../../firebaseConfig";
 
 interface Vehicle {
-  id: string; // Document ID from Firestore
-  Availability: number; // 0 or 1 for availability
+  id: string;
+  Availability: number;
   brand: string;
   name: string;
   owner: string;
@@ -35,7 +35,7 @@ const VehicleManagement: React.FC = () => {
       const vehicleSnapshot = await getDocs(vehicleCollection);
       const vehicleList = vehicleSnapshot.docs.map(doc => ({
         id: doc.id,
-        ...(doc.data() as Omit<Vehicle, 'id'>), // Ensure the correct types are applied
+        ...(doc.data() as Omit<Vehicle, 'id'>), 
       })) as Vehicle[];
       setVehicles(vehicleList);
     };
