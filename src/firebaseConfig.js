@@ -1,6 +1,6 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
+import { getAnalytics,isSupported } from "firebase/analytics";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -22,6 +22,8 @@ if (typeof window !== 'undefined') {
   isSupported().then((supported) => {
     if (supported) {
       getAnalytics(app);
+    }else {
+      console.log("Analytics is not supported in this environment.");
     }
   });
 }
