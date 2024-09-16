@@ -3,6 +3,7 @@ import { useState } from 'react';
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import { metadata } from "./metadataaddvehicle";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
+import { getAnalytics, isSupported } from 'firebase/analytics';
 import SelectGroupOne from "@/components/SelectGroup/SelectGroupOne";
 import { collection, addDoc, getFirestore } from 'firebase/firestore';
 import "../../../firebaseConfig";
@@ -92,7 +93,7 @@ const FormLayout = () => {
                   <div className="mb-4.5 flex flex-col gap-6 xl:flex-row">
                     <div className="w-full xl:w-1/2">
                       <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                        Owner's First name
+                        Owner&apos;s First name
                       </label>
                       <input
                         type="text"
@@ -106,7 +107,7 @@ const FormLayout = () => {
 
                     <div className="w-full xl:w-1/2">
                       <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                        Owner's Last name
+                        Owner&apos;s Last name
                       </label>
                       <input
                         type="text"

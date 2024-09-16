@@ -36,7 +36,7 @@ const SignIn: React.FC = () => {
               </Link>
 
               <p className="2xl:px-20">
-              provides a seamless booking experience for both tourists and locals. Whether you're exploring the city or going on a weekend trip, our app has the right car for you.
+              provides a seamless booking experience for both tourists and locals. Whether you are exploring the city or going on a weekend trip, our app has the right car for you.
 
               </p>
 

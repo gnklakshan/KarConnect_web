@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@firebase/analytics": "^0.10.7",
     "apexcharts": "^3.45.2",
     "firebase": "^10.12.4",
     "flatpickr": "^4.6.13",
@@ -19,10 +20,10 @@
     "react-dom": "^18.3.1"
   },
   "devDependencies": {
-    "@types/node": "^20",
-    "@types/react": "^18",
+    "@types/node": "^20.16.1",
+    "@types/react": "^18.3.4",
     "@types/react-datepicker": "^6.2.0",
-    "@types/react-dom": "^18",
+    "@types/react-dom": "^18.3.0",
     "autoprefixer": "^10.0.1",
     "eslint": "^8",
     "eslint-config-next": "14.1.0",
@@ -30,6 +31,6 @@
     "prettier": "^3.2.5",
     "prettier-plugin-tailwindcss": "^0.5.11",
     "tailwindcss": "^3.4.1",
-    "typescript": "^5"
+    "typescript": "^5.5.4"
   }
 }

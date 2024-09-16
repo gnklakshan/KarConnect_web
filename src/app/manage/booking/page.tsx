@@ -4,6 +4,7 @@ import { collection, getFirestore, getDocs, doc, getDoc, updateDoc, writeBatch }
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import Link from "next/link";
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
+import { getAnalytics, isSupported } from "firebase/analytics";
 import "../../../firebaseConfig";
 import { metadata } from "./metadatabooking";
 
@@ -44,6 +45,7 @@ interface VehicleData {
 }
 
 const BookingPage: React.FC = () => {
+  const [analyticsInitialized, setAnalyticsInitialized] = useState(false);
   const [bookingData, setBookingData] = useState<BookingData[]>([]);
   const [users, setUsers] = useState<{ [key: string]: UserData }>({});
   const [pendingCount, setPendingCount] = useState(0);
@@ -59,6 +61,29 @@ const BookingPage: React.FC = () => {
   const [dateFilter, setDateFilter] = useState<string>('');
 
   useEffect(() => {
+    // //0916
+    //  // Ensure this runs only on the client-side
+    //  if (typeof window === 'undefined') {
+    //   return; // Exit early if this is running on the server
+    // }
+    // //0916
+    const initAnalytics = async () => {
+      if (typeof window !== "undefined") {
+        try {
+          const supported = await isSupported();
+          if (supported) {
+            getAnalytics();
+            setAnalyticsInitialized(true);
+            console.log("Firebase Analytics initialized");
+          }
+        } catch (error) {
+          console.error("Error initializing Firebase Analytics", error);
+        }
+      }
+    };
+  
+    initAnalytics();
+
     const db = getFirestore();
     document.title = metadata.title;
     const fetchBookingData = async () => {
@@ -224,7 +249,7 @@ const BookingPage: React.FC = () => {
     };
 
     fetchBookingData();
-  }, [statusFilter, vehicleFilter, dateFilter]); // Dependencies
+  }, [rentalData,vehicledData,statusFilter, vehicleFilter, dateFilter]); // Dependencies
 
   const handleConfirm = async (bookingId: string, RentUser: string) => {
     if (window.confirm("Are you sure you want to confirm this booking?")) {
