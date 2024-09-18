@@ -351,7 +351,7 @@ const BookingPage: React.FC = () => {
                 <div>Canceled Requests</div>
               </div>
               <div className="flex-1 mb-4 md:mb-0">
-                <div className="text-2xl font-bold text-primary-color">Rs.{monthlyEarnings.toFixed(2)}</div>
+                <div className="text-2xl font-bold text-primary-color">Rs.{}</div>
                 <div>Monthly Earnings</div>
               </div>
             </div>
