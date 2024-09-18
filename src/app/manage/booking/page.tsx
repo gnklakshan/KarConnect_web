@@ -99,7 +99,7 @@ const BookingPage: React.FC = () => {
           fetchUserData(booking.RentUser);
           getRentData(booking.VehicleID, booking.RentUser);
           fetchVehicleData(booking.VehicleID);
-          calculateMonthlyEarnings(booking.VehicleID, booking.RentUser);
+          //calculateMonthlyEarnings(booking.VehicleID, booking.RentUser);
         });
 
         // Apply filters
@@ -165,7 +165,7 @@ const BookingPage: React.FC = () => {
       }
     };
 
-    const calculateMonthlyEarnings = async (vehicleId: string, rentUser: string) => {
+    /*const calculateMonthlyEarnings = async (vehicleId: string, rentUser: string) => {
       try {
         const db = getFirestore();
 
@@ -218,7 +218,7 @@ const BookingPage: React.FC = () => {
       } catch (error) {
         console.error(`Error calculating monthly earnings:`, error);
       }
-    };
+    };*/
 
     const applyFilters = (bookingsData: BookingData[]) => {
       const filteredBookings = bookingsData.filter(booking => {
@@ -351,8 +351,8 @@ const BookingPage: React.FC = () => {
                 <div>Canceled Requests</div>
               </div>
               <div className="flex-1 mb-4 md:mb-0">
-                {/*<div className="text-2xl font-bold text-primary-color">Rs.</div>*/}
-                <div>Monthly Earnings</div>
+                {/*<div className="text-2xl font-bold text-primary-color">Rs.</div>
+                <div>Monthly Earnings</div>*/}
               </div>
             </div>
           </section>
