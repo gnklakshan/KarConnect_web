@@ -105,7 +105,7 @@ const VehicleManagement: React.FC = () => {
             Add New Vehicle
           </button>
         </Link>
-        <table className="w-full bg-black shadow-md rounded">
+        <table className="bg-white p-6 rounded-lg shadow mb-8 dark:border-strokedark dark:bg-boxdark">
           <thead>
             <tr className="bg-gray-100 border-b">
               <th className="text-left p-3">Vehicle</th>
