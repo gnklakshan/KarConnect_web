@@ -1,84 +1,79 @@
 "use client";
-import { useState } from 'react';
+import { useState } from "react";
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import { metadata } from "./metadataaddvehicle";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
-import { getAnalytics, isSupported } from 'firebase/analytics';
 import SelectGroupOne from "@/components/SelectGroup/SelectGroupOne";
-import { collection, addDoc, getFirestore } from 'firebase/firestore';
+import { collection, addDoc, getFirestore } from "firebase/firestore";
 import "../../../firebaseConfig";
 import Link from "next/link";
 
-
-
 const FormLayout = () => {
-  const [formData, setFormData]=useState({
-    firstName:"",
-    lastName:'',
-    vehicleType:'',
-    vehicleName:'',
-    vehicleNumber:'',
-    price:'',
-    brand:'',
-    description:'',
-    image:'',
-    Availability:'',
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    vehicleType: "",
+    vehicleName: "",
+    vehicleNumber: "",
+    price: "",
+    brand: "",
+    description: "",
+    image: "",
+    Availability: "",
   });
 
-  const handleChange = (e: { target: { name: string; value: string; }; }) => {
+  const handleChange = (e: { target: { name: string; value: string } }) => {
     const { name, value } = e.target;
-    setFormData(prevFormData => ({
+    setFormData((prevFormData) => ({
       ...prevFormData,
-      [name]: value
+      [name]: value,
     }));
   };
 
-  const handleSubmit = async (e: { preventDefault: () => void; }) => {
+  const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
-    
+
     const db = getFirestore(); // Initialize Firestore with the Firebase app
 
     try {
-      const collectionRef = collection(db, 'vehicle_db'); // Reference to the collection
-      await addDoc(collectionRef,{
-        brand:formData.brand,
-        description:formData.description,
-        main_image:formData.image,
-        name:formData.vehicleName,
-        owner:`${formData.firstName} ${formData.lastName}`,
+      const collectionRef = collection(db, "vehicle_db"); // Reference to the collection
+      await addDoc(collectionRef, {
+        brand: formData.brand,
+        description: formData.description,
+        main_image: formData.image,
+        name: formData.vehicleName,
+        owner: `${formData.firstName} ${formData.lastName}`,
         price: Number(formData.price),
         type: formData.vehicleType,
         vehicle_no: formData.vehicleNumber,
-        Availability:1,
-        createdAt: new Date() 
+        Availability: 1,
+        createdAt: new Date(),
       });
-      alert('Vehicle added successfully!');
+      alert("Vehicle added successfully!");
       setFormData({
-        firstName: '',
-        lastName: '',
-        vehicleType: '',
-        vehicleName: '',
-        vehicleNumber: '',
-        price: '',
-        description: '',
-        brand: '',
-        image: '',
-        Availability:'',
+        firstName: "",
+        lastName: "",
+        vehicleType: "",
+        vehicleName: "",
+        vehicleNumber: "",
+        price: "",
+        description: "",
+        brand: "",
+        image: "",
+        Availability: "",
       });
-    }catch (error) {
+    } catch (error) {
       console.error("Error adding vehicle: ", error);
-      alert('Error adding vehicle. Please try again.');
+      alert("Error adding vehicle. Please try again.");
     }
   };
-  
+
   return (
     <DefaultLayout>
       <Breadcrumb pageName="Add Vehicle" />
 
       {/* <div className="grid grid-cols-1 gap-9 sm:grid-cols-2"> */}
       <div className="grid grid-cols-1 gap-9">
-        
-
         <div className="grid grid-cols-1 gap-9">
           <div className="flex flex-col gap-9">
             {/* VEHICLE DETAILS */}
@@ -97,7 +92,7 @@ const FormLayout = () => {
                       </label>
                       <input
                         type="text"
-                        name='firstName'
+                        name="firstName"
                         value={formData.firstName}
                         onChange={handleChange}
                         placeholder="Enter owner's first name"
@@ -111,7 +106,7 @@ const FormLayout = () => {
                       </label>
                       <input
                         type="text"
-                        name='lastName'
+                        name="lastName"
                         value={formData.lastName}
                         onChange={handleChange}
                         placeholder="Enter owner's last name"
@@ -126,7 +121,7 @@ const FormLayout = () => {
                     </label>
                     <input
                       type="text"
-                      name='vehicleType'
+                      name="vehicleType"
                       value={formData.vehicleType}
                       onChange={handleChange}
                       placeholder="car,van...etc"
@@ -134,14 +129,13 @@ const FormLayout = () => {
                     />
                   </div>
 
-
                   <div className="mb-4.5">
                     <label className="mb-3 block text-sm font-medium text-black dark:text-white">
                       Vehicle Name
                     </label>
                     <input
                       type="text"
-                      name='vehicleName'
+                      name="vehicleName"
                       value={formData.vehicleName}
                       onChange={handleChange}
                       placeholder="Vehicle Name"
@@ -155,7 +149,7 @@ const FormLayout = () => {
                     </label>
                     <input
                       type="text"
-                      name='vehicleNumber'
+                      name="vehicleNumber"
                       value={formData.vehicleNumber}
                       onChange={handleChange}
                       placeholder="Enter Vehicle Number"
@@ -164,9 +158,9 @@ const FormLayout = () => {
                   </div>
 
                   <SelectGroupOne
-        selectedBrand={formData.brand}
-        onBrandChange={handleChange}
-      />
+                    selectedBrand={formData.brand}
+                    onBrandChange={handleChange}
+                  />
 
                   {/* <!-- File upload --> */}
                   <div className="w-full xl:w-1/2">
@@ -179,7 +173,7 @@ const FormLayout = () => {
                       <div>
                         <input
                           type="file"
-                          name='image'
+                          name="image"
                           value={formData.image}
                           onChange={handleChange}
                           className="w-full rounded-md border border-stroke p-3 outline-none transition file:mr-4 file:rounded file:border-[0.5px] file:border-stroke file:bg-[#EEEEEE] file:px-2.5 file:py-1 file:text-sm focus:border-primary file:focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:file:border-strokedark dark:file:bg-white/30 dark:file:text-white"
@@ -194,7 +188,7 @@ const FormLayout = () => {
                     </label>
                     <input
                       type="text"
-                      name='price'
+                      name="price"
                       value={formData.price}
                       onChange={handleChange}
                       placeholder="rent price"
@@ -208,7 +202,7 @@ const FormLayout = () => {
                     </label>
                     <textarea
                       rows={6}
-                      name='description'
+                      name="description"
                       value={formData.description}
                       onChange={handleChange}
                       placeholder="Type your message"
@@ -225,9 +219,7 @@ const FormLayout = () => {
           </div>
         </div>
 
-
-        <div className="flex flex-col gap-9">
-        </div>
+        <div className="flex flex-col gap-9"></div>
       </div>
     </DefaultLayout>
   );
