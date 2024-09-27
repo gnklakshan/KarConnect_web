@@ -1,51 +1,51 @@
 "use client";
 import React from "react";
 
-interface SelectGroupOneProps {
-  selectedBrand: string;
-  onBrandChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+interface SelectGroupTypeProps {
+  selectedType: string;
+  onTypeChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
 }
 
-const SelectGroupOne: React.FC<SelectGroupOneProps> = ({
-  selectedBrand,
-  onBrandChange,
+const SelectGroupType: React.FC<SelectGroupTypeProps> = ({
+  selectedType,
+  onTypeChange,
 }) => {
   return (
     <div className="mb-4.5">
       <label className="mb-2.5 block text-black dark:text-white">
         {" "}
-        Vehicle Brand{" "}
+        Vehicle Type{" "}
       </label>
 
       <div className="relative z-20 bg-transparent dark:bg-form-input">
         <select
-          name="brand"
-          value={selectedBrand}
-          onChange={onBrandChange}
+          name="vehicleType"
+          value={selectedType}
+          onChange={onTypeChange}
           className={`relative z-20 w-full appearance-none rounded border border-stroke bg-transparent px-5 py-3 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary ${
-            selectedBrand ? "text-black dark:text-white" : ""
+            selectedType ? "text-black dark:text-white" : ""
           }`}
         >
           <option value="" disabled className="text-body dark:text-bodydark">
-            Select Car Brand
+            Select Vehicle Type
           </option>
-          <option value="Audi" className="text-body dark:text-bodydark">
-            Audi
+          <option value="Car" className="text-body dark:text-bodydark">
+            Car
           </option>
-          <option value="BMW" className="text-body dark:text-bodydark">
-            BMW
+          <option value="Van" className="text-body dark:text-bodydark">
+            Van
           </option>
-          <option value="Jaguar" className="text-body dark:text-bodydark">
-            Jaguar
+          <option value="Lorry" className="text-body dark:text-bodydark">
+            Lorry
           </option>
-          <option value="Mercedes" className="text-body dark:text-bodydark">
-            Mercedes
+          <option value="SUV" className="text-body dark:text-bodydark">
+            SUV
           </option>
-          <option value="Nissan" className="text-body dark:text-bodydark">
-            Nissan
+          <option value="Limousine" className="text-body dark:text-bodydark">
+            Limousine
           </option>
-          <option value="Toyota" className="text-body dark:text-bodydark">
-            Toyota
+          <option value="Microcar" className="text-body dark:text-bodydark">
+            Microcar
           </option>
         </select>
 
@@ -73,4 +73,4 @@ const SelectGroupOne: React.FC<SelectGroupOneProps> = ({
   );
 };
 
-export default SelectGroupOne;
+export default SelectGroupType;
