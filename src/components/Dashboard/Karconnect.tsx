@@ -1,4 +1,5 @@
 "use client";
+import useAuth from "@/hooks/useAuth";
 import dynamic from "next/dynamic";
 import ChartOne from "../Charts/ChartOne";
 import ChartTwo from "../Charts/ChartTwo";
@@ -6,10 +7,11 @@ import ChatCard from "../Chat/ChatCard";
 import TableOne from "../Tables/TableOne";
 import CardDataStats from "../CardDataStats";
 import Link from "next/link";
-import React, { useState,useEffect} from "react";
-import '../../firebaseConfig';
-import { getFirestore,addDoc,collection,getDocs } from "firebase/firestore";
-
+import React, { useState, useEffect } from "react";
+import "../../firebaseConfig";
+import { getFirestore, addDoc, collection, getDocs } from "firebase/firestore";
+import withAuth from "@/hooks/withAuth";
+//  import useAuth from "@/hooks/useAuth";
 
 const MapOne = dynamic(() => import("@/components/Maps/MapOne"), {
   ssr: false,
@@ -20,8 +22,10 @@ const ChartThree = dynamic(() => import("@/components/Charts/ChartThree"), {
 });
 
 const ECommerce: React.FC = () => {
+  useAuth();
+
   const [userCount, setUserCount] = useState<number | null>(null);
-  const [vehicleCount, setVehicleCount]=useState<number|null>(null);
+  const [vehicleCount, setVehicleCount] = useState<number | null>(null);
   useEffect(() => {
     const fetchUserCount = async () => {
       try {
@@ -36,22 +40,22 @@ const ECommerce: React.FC = () => {
 
     fetchUserCount();
   }, []);
-  useEffect(()=>{
-    const fetchVehicleCount=async()=>{
-      try{
+  useEffect(() => {
+    const fetchVehicleCount = async () => {
+      try {
         const db = getFirestore();
         const vehicleCollection = collection(db, "vehicle_db");
         const vehicleSnapshot = await getDocs(vehicleCollection);
         setVehicleCount(vehicleSnapshot.size);
-      }catch (error) {
+      } catch (error) {
         console.error("Error fetching vehicle count:", error);
       }
     };
     fetchVehicleCount();
-  },[]);
+  }, []);
   return (
     <>
-      <div className="mb-1.5 flex flex-wrap gap-2 xl:gap-6 items-end justify-end py-4" >
+      <div className="mb-1.5 flex flex-wrap items-end justify-end gap-2 py-4 xl:gap-6">
         <Link
           href="/manage/add-vehicle"
           className="inline-flex items-center justify-center rounded-md bg-meta-3 px-10 py-3 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10"
@@ -66,12 +70,57 @@ const ECommerce: React.FC = () => {
         </Link>
       </div>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-4 2xl:gap-7.5">
-        <CardDataStats title="Total Vehicles" total={`${vehicleCount ?? "Loading..."}`}  rate="0.43%" levelUp>
-          <svg className="fill-primary dark:fill-white" width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" ><rect width="512" height="512" x="0" y="0" rx="30" fill="transparent" stroke="transparent" stroke-width="0" stroke-opacity="100%" paint-order="stroke"></rect><svg width="256px" height="256px" viewBox="0 0 16 16" fill="fill-primary" x="128" y="128" role="img" xmlns="http://www.w3.org/2000/svg"><g fill="fill-primary"><path fill="fill-primary" d="M2.52 3.515A2.5 2.5 0 0 1 4.82 2h6.362c1 0 1.904.596 2.298 1.515l.792 1.848c.075.175.21.319.38.404c.5.25.855.715.965 1.262l.335 1.679c.033.161.049.325.049.49v.413c0 .814-.39 1.543-1 1.997V13.5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-1.338c-1.292.048-2.745.088-4 .088s-2.708-.04-4-.088V13.5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-1.892c-.61-.454-1-1.183-1-1.997v-.413a2.5 2.5 0 0 1 .049-.49l.335-1.68c.11-.546.465-1.012.964-1.261a.807.807 0 0 0 .381-.404l.792-1.848ZM3 10a1 1 0 1 0 0-2a1 1 0 0 0 0 2Zm10 0a1 1 0 1 0 0-2a1 1 0 0 0 0 2ZM6 8a1 1 0 0 0 0 2h4a1 1 0 1 0 0-2H6ZM2.906 5.189a.51.51 0 0 0 .497.731c.91-.073 3.35-.17 4.597-.17c1.247 0 3.688.097 4.597.17a.51.51 0 0 0 .497-.731l-.956-1.913A.5.5 0 0 0 11.691 3H4.309a.5.5 0 0 0-.447.276L2.906 5.19Z" /></g></svg></svg>
-
+        <CardDataStats
+          title="Total Vehicles"
+          total={`${vehicleCount ?? "Loading..."}`}
+          rate="0.43%"
+          levelUp
+        >
+          <svg
+            className="fill-primary dark:fill-white"
+            width="512"
+            height="512"
+            viewBox="0 0 512 512"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <rect
+              width="512"
+              height="512"
+              x="0"
+              y="0"
+              rx="30"
+              fill="transparent"
+              stroke="transparent"
+              stroke-width="0"
+              stroke-opacity="100%"
+              paint-order="stroke"
+            ></rect>
+            <svg
+              width="256px"
+              height="256px"
+              viewBox="0 0 16 16"
+              fill="fill-primary"
+              x="128"
+              y="128"
+              role="img"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <g fill="fill-primary">
+                <path
+                  fill="fill-primary"
+                  d="M2.52 3.515A2.5 2.5 0 0 1 4.82 2h6.362c1 0 1.904.596 2.298 1.515l.792 1.848c.075.175.21.319.38.404c.5.25.855.715.965 1.262l.335 1.679c.033.161.049.325.049.49v.413c0 .814-.39 1.543-1 1.997V13.5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-1.338c-1.292.048-2.745.088-4 .088s-2.708-.04-4-.088V13.5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-1.892c-.61-.454-1-1.183-1-1.997v-.413a2.5 2.5 0 0 1 .049-.49l.335-1.68c.11-.546.465-1.012.964-1.261a.807.807 0 0 0 .381-.404l.792-1.848ZM3 10a1 1 0 1 0 0-2a1 1 0 0 0 0 2Zm10 0a1 1 0 1 0 0-2a1 1 0 0 0 0 2ZM6 8a1 1 0 0 0 0 2h4a1 1 0 1 0 0-2H6ZM2.906 5.189a.51.51 0 0 0 .497.731c.91-.073 3.35-.17 4.597-.17c1.247 0 3.688.097 4.597.17a.51.51 0 0 0 .497-.731l-.956-1.913A.5.5 0 0 0 11.691 3H4.309a.5.5 0 0 0-.447.276L2.906 5.19Z"
+                />
+              </g>
+            </svg>
+          </svg>
         </CardDataStats>
-        
-        <CardDataStats title="Total Income" total="Rs 2450" rate="2.59%" levelUp>
+
+        <CardDataStats
+          title="Total Income"
+          total="Rs 2450"
+          rate="2.59%"
+          levelUp
+        >
           <svg
             className="fill-primary dark:fill-white"
             width="22"
@@ -90,7 +139,12 @@ const ECommerce: React.FC = () => {
             />
           </svg>
         </CardDataStats>
-        <CardDataStats title="Total Users" total={`${userCount ?? "Loading..."}`} rate="0.95%" levelDown>
+        <CardDataStats
+          title="Total Users"
+          total={`${userCount ?? "Loading..."}`}
+          rate="0.95%"
+          levelDown
+        >
           <svg
             className="fill-primary dark:fill-white"
             width="22"
@@ -113,9 +167,53 @@ const ECommerce: React.FC = () => {
             />
           </svg>
         </CardDataStats>
-        <CardDataStats title="Average Ratings" total="4.8⭐" rate="4.35%" levelUp>
-        <svg width="512" height="512" viewBox="0 0 512 512"  xmlns="http://www.w3.org/2000/svg" ><rect width="512" height="512" x="0" y="0" rx="30" fill="transparent" stroke="transparent" stroke-width="0" stroke-opacity="100%" paint-order="stroke"></rect><svg width="256px" height="256px" viewBox="0 0 14 14" fill="fill-primary" x="128" y="128" role="img"  xmlns="http://www.w3.org/2000/svg"><g fill="fill-primary"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M6 1.05a1.18 1.18 0 0 1 2 0l1.94 3.07l2.53.31a1.16 1.16 0 0 1 .75 1.91l-2.11 2.42l.68 3.35a1.17 1.17 0 0 1-.46 1.17a1.19 1.19 0 0 1-1.26.07L7 11.67l-3.07 1.68a1.19 1.19 0 0 1-1.26-.07a1.17 1.17 0 0 1-.46-1.17l.68-3.35L.78 6.34a1.16 1.16 0 0 1 .75-1.91l2.53-.31Z"/><path d="M5.5 5.52h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-2m3-2h-3"/></g></g></svg></svg>
+        <CardDataStats
+          title="Average Ratings"
+          total="4.8⭐"
+          rate="4.35%"
+          levelUp
+        >
+          <svg
+            width="512"
+            height="512"
+            viewBox="0 0 512 512"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <rect
+              width="512"
+              height="512"
+              x="0"
+              y="0"
+              rx="30"
+              fill="transparent"
+              stroke="transparent"
+              stroke-width="0"
+              stroke-opacity="100%"
+              paint-order="stroke"
+            ></rect>
+            <svg
+              width="256px"
+              height="256px"
+              viewBox="0 0 14 14"
+              fill="fill-primary"
+              x="128"
+              y="128"
+              role="img"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <g fill="fill-primary">
+                <g
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M6 1.05a1.18 1.18 0 0 1 2 0l1.94 3.07l2.53.31a1.16 1.16 0 0 1 .75 1.91l-2.11 2.42l.68 3.35a1.17 1.17 0 0 1-.46 1.17a1.19 1.19 0 0 1-1.26.07L7 11.67l-3.07 1.68a1.19 1.19 0 0 1-1.26-.07a1.17 1.17 0 0 1-.46-1.17l.68-3.35L.78 6.34a1.16 1.16 0 0 1 .75-1.91l2.53-.31Z" />
+                  <path d="M5.5 5.52h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-2m3-2h-3" />
+                </g>
+              </g>
+            </svg>
+          </svg>
         </CardDataStats>
       </div>
 

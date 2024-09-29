@@ -2,12 +2,59 @@ import React from "react";
 import Link from "next/link";
 import SidebarDropdown from "@/components/Sidebar/SidebarDropdown";
 import { usePathname } from "next/navigation";
+import useAuth from "@/hooks/useAuth";
+import { getAuth, signOut } from "firebase/auth";
 
 const SidebarItem = ({ item, pageName, setPageName }: any) => {
+  const { setUser } = useAuth();
   const handleClick = () => {
+    console.log("4");
     const updatedPageName =
       pageName !== item.label.toLowerCase() ? item.label.toLowerCase() : "";
+    console.log("4", updatedPageName);
+
     return setPageName(updatedPageName);
+  };
+  const handleActionClick = () => {
+    if (item.label === "Log Out") {
+      // item.action(); // Trigger the action if it exists/ Call the action function if it exists
+
+      const auth = getAuth();
+
+      const users = auth.currentUser;
+
+      console.log("5");
+      setUser(null);
+      // setUser(null);
+
+      localStorage.removeItem("authToken"); // Clear authentication tokens
+      localStorage.removeItem("userDetails");
+      console.log("User is signed out: ");
+
+      signOut(auth)
+        .then(() => {
+          // Sign-out successful
+          window.location.href = "/auth/signin"; // Redirect to login page
+        })
+        .catch((error) => {
+          // Handle error
+          console.error("Error signing out: ", error);
+        });
+    }
+  };
+
+  const handleCombinedClick = (e: React.MouseEvent) => {
+    // e.preventDefault(); // Prevent default link behavior
+
+    if (item.label === "Log Out") {
+      e.preventDefault();
+      handleActionClick();
+    }
+    console.log("3");
+
+    handleClick(); // Call the original handleClick for updating the state
+
+    // Trigger the action if there is one
   };
 
   const pathname = usePathname();
@@ -27,7 +74,7 @@ const SidebarItem = ({ item, pageName, setPageName }: any) => {
       <li>
         <Link
           href={item.route}
-          onClick={handleClick}
+          onClick={handleCombinedClick}
           className={`${isItemActive ? "bg-graydark dark:bg-meta-4" : ""} group relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4`}
         >
           {item.icon}
