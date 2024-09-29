@@ -1,11 +1,18 @@
-"use client"; 
+"use client";
 
 import React, { useState, useEffect } from "react";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import { metadata } from "./vehicleManagementMetaData";
 import Link from "next/link";
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
-import { collection, deleteDoc, getFirestore, getDocs, doc, updateDoc } from 'firebase/firestore';
+import {
+  collection,
+  deleteDoc,
+  getFirestore,
+  getDocs,
+  doc,
+  updateDoc,
+} from "firebase/firestore";
 import "../../firebaseConfig";
 
 interface Vehicle {
@@ -33,9 +40,9 @@ const VehicleManagement: React.FC = () => {
     const fetchVehicles = async () => {
       const vehicleCollection = collection(db, "vehicle_db");
       const vehicleSnapshot = await getDocs(vehicleCollection);
-      const vehicleList = vehicleSnapshot.docs.map(doc => ({
+      const vehicleList = vehicleSnapshot.docs.map((doc) => ({
         id: doc.id,
-        ...(doc.data() as Omit<Vehicle, 'id'>), 
+        ...(doc.data() as Omit<Vehicle, "id">),
       })) as Vehicle[];
       setVehicles(vehicleList);
     };
@@ -45,24 +52,35 @@ const VehicleManagement: React.FC = () => {
 
   const updateAvailability = async (vehicle: Vehicle) => {
     const vehicleDocRef = doc(db, "vehicle_db", vehicle.id);
-    await updateDoc(vehicleDocRef, { Availability: vehicle.Availability === 0 ? 1 : 0 });
-    setVehicles(vehicles.map(v => v.id === vehicle.id ? { ...v, Availability: vehicle.Availability === 0 ? 1 : 0 } : v));
+    await updateDoc(vehicleDocRef, {
+      Availability: vehicle.Availability === 0 ? 1 : 0,
+    });
+    setVehicles(
+      vehicles.map((v) =>
+        v.id === vehicle.id
+          ? { ...v, Availability: vehicle.Availability === 0 ? 1 : 0 }
+          : v,
+      ),
+    );
   };
 
   const deleteVehicle = async (vehicle: Vehicle) => {
     if (confirm(`Are you sure you want to delete ${vehicle.name}?`)) {
       const vehicleDocRef = doc(db, "vehicle_db", vehicle.id);
       await deleteDoc(vehicleDocRef);
-      setVehicles(vehicles.filter(v => v.id !== vehicle.id));
+      setVehicles(vehicles.filter((v) => v.id !== vehicle.id));
     }
   };
 
-  const filteredVehicles = vehicles.filter(vehicle => {
-    const matchesSearch = vehicle.brand.toLowerCase().includes(searchQuery.toLowerCase()) ||
+  const filteredVehicles = vehicles.filter((vehicle) => {
+    const matchesSearch =
+      vehicle.brand.toLowerCase().includes(searchQuery.toLowerCase()) ||
       vehicle.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       vehicle.vehicle_no.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesType = typeFilter === '' || vehicle.type === typeFilter;
-    const matchesAvailability = availabilityFilter === '' || vehicle.Availability.toString() === availabilityFilter;
+    const matchesType = typeFilter === "" || vehicle.type === typeFilter;
+    const matchesAvailability =
+      availabilityFilter === "" ||
+      vehicle.Availability.toString() === availabilityFilter;
     return matchesSearch && matchesType && matchesAvailability;
   });
 
@@ -70,16 +88,16 @@ const VehicleManagement: React.FC = () => {
     <DefaultLayout>
       <Breadcrumb pageName="Vehicle Management" />
       <div className="container mx-auto p-5">
-        <div className="flex flex-wrap justify-between mb-5">
+        <div className="mb-5 flex flex-wrap justify-between">
           <input
             type="text"
-            className="p-2 border border-gray-300 rounded mb-2"
+            className="border-gray-300 mb-2 rounded border p-2"
             placeholder="Search vehicles..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
           <select
-            className="p-2 border border-gray-300 rounded mb-2"
+            className="border-gray-300 mb-2 rounded border p-2"
             value={typeFilter}
             onChange={(e) => setTypeFilter(e.target.value)}
           >
@@ -91,7 +109,7 @@ const VehicleManagement: React.FC = () => {
             <option value="Luxury">Luxury</option>
           </select>
           <select
-            className="p-2 border border-gray-300 rounded mb-2"
+            className="border-gray-300 mb-2 rounded border p-2"
             value={availabilityFilter}
             onChange={(e) => setAvailabilityFilter(e.target.value)}
           >
@@ -101,25 +119,27 @@ const VehicleManagement: React.FC = () => {
           </select>
         </div>
         <Link href="/manage/add-vehicle">
-          <button className="bg-green-500 text-white py-2 px-4 rounded mb-5 hover:bg-green-600">
+          <button className="mb-5 rounded bg-green-500 px-4 py-2 text-white hover:bg-green-600">
             Add New Vehicle
           </button>
         </Link>
-        <table className="bg-white p-6 rounded-lg shadow mb-8 dark:border-strokedark dark:bg-boxdark">
+        <table className="mb-8 w-full rounded-lg bg-white p-6 shadow dark:border-strokedark dark:bg-boxdark">
           <thead>
             <tr className="bg-gray-100 border-b">
-              <th className="text-left p-3">Vehicle</th>
-              <th className="text-left p-3">Type</th>
-              <th className="text-left p-3">License Plate</th>
-              <th className="text-left p-3">Price</th>
-              <th className="text-left p-3">Availability</th>
-              <th className="text-left p-3">Actions</th>
+              <th className="p-3 text-left">Vehicle</th>
+              <th className="p-3 text-left">Type</th>
+              <th className="p-3 text-left">License Plate</th>
+              <th className="p-3 text-left">Price</th>
+              <th className="p-3 text-left">Availability</th>
+              <th className="p-3 text-left">Actions</th>
             </tr>
           </thead>
           <tbody>
-            {filteredVehicles.map(vehicle => (
-              <tr key={vehicle.id} className="border-b hover:bg-gray-50">
-                <td className="p-3">{vehicle.brand} {vehicle.name}</td>
+            {filteredVehicles.map((vehicle) => (
+              <tr key={vehicle.id} className="hover:bg-gray-50 border-b">
+                <td className="p-3">
+                  {vehicle.brand} {vehicle.name}
+                </td>
                 <td className="p-3">{vehicle.type}</td>
                 <td className="p-3">{vehicle.vehicle_no}</td>
                 <td className="p-3">Rs.{vehicle.price}</td>
@@ -131,20 +151,22 @@ const VehicleManagement: React.FC = () => {
                       checked={vehicle.Availability === 1}
                       onChange={() => updateAvailability(vehicle)}
                     />
-                    <span className={`status-indicator ${vehicle.Availability === 1 ? 'bg-green-500' : 'bg-red'}`} />
-                    {vehicle.Availability === 1 ? 'Available' : 'Unavailable'}
+                    <span
+                      className={`status-indicator ${vehicle.Availability === 1 ? "bg-green-500" : "bg-red"}`}
+                    />
+                    {vehicle.Availability === 1 ? "Available" : "Unavailable"}
                   </label>
                 </td>
                 <td className="p-3">
                   <div className="flex space-x-2">
                     <button
-                      className="bg-blue-500 text-white py-1 px-2 rounded hover:bg-blue-600"
+                      className="rounded bg-blue-500 px-2 py-1 text-white hover:bg-blue-600"
                       // onClick={() => editVehicle(vehicle)}
                     >
                       <i className="fas fa-edit"></i> Edit
                     </button>
                     <button
-                      className="bg-red text-white py-1 px-2 rounded hover:bg-orange-800"
+                      className="rounded bg-red px-2 py-1 text-white hover:bg-orange-800"
                       onClick={() => deleteVehicle(vehicle)}
                     >
                       <i className="fas fa-trash"></i> Delete

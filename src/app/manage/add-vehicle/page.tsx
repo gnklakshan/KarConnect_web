@@ -3,10 +3,12 @@ import { useState } from "react";
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import { metadata } from "./metadataaddvehicle";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
-import SelectGroupOne from "@/components/SelectGroup/SelectGroupOne";
-import { collection, addDoc, getFirestore } from "firebase/firestore";
+
+import { collection, addDoc, getFirestore, GeoPoint } from "firebase/firestore";
 import "../../../firebaseConfig";
 import Link from "next/link";
+import SelectGroupOne from "@/components/SelectGroup/SelectGroupOne";
+import SelectGroupType from "@/components/SelectGroup/SelectGroupType copy";
 
 const FormLayout = () => {
   const [formData, setFormData] = useState({
@@ -20,6 +22,10 @@ const FormLayout = () => {
     description: "",
     image: "",
     Availability: "",
+    Latitude: "",
+    Longitude: "",
+    No_of_Seats: 0,
+    mileage: "",
   });
 
   const handleChange = (e: { target: { name: string; value: string } }) => {
@@ -40,14 +46,22 @@ const FormLayout = () => {
       await addDoc(collectionRef, {
         brand: formData.brand,
         description: formData.description,
-        main_image: formData.image,
+        // main_image: formData.image,
+        main_image:
+          "https://firebasestorage.googleapis.com/v0/b/karconnect-2bf95.appspot.com/o/images%2Ftoyota.jpg?alt=media&token=dc3294bb-2161-413c-9cff-1036bd1edc18",
         name: formData.vehicleName,
         owner: `${formData.firstName} ${formData.lastName}`,
         price: Number(formData.price),
         type: formData.vehicleType,
         vehicle_no: formData.vehicleNumber,
         Availability: 1,
+        location: new GeoPoint(
+          parseFloat(formData.Latitude),
+          parseFloat(formData.Longitude),
+        ),
         createdAt: new Date(),
+        No_of_Seats: formData.No_of_Seats,
+        mileage: formData.mileage,
       });
       alert("Vehicle added successfully!");
       setFormData({
@@ -61,6 +75,10 @@ const FormLayout = () => {
         brand: "",
         image: "",
         Availability: "",
+        Latitude: "",
+        Longitude: "",
+        No_of_Seats: 0,
+        mileage: "",
       });
     } catch (error) {
       console.error("Error adding vehicle: ", error);
@@ -76,11 +94,11 @@ const FormLayout = () => {
       <div className="grid grid-cols-1 gap-9">
         <div className="grid grid-cols-1 gap-9">
           <div className="flex flex-col gap-9">
-            {/* VEHICLE DETAILS */}
+            {/* Owner DETAILS */}
             <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
               <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
                 <h2 className="font-medium text-blue-700 dark:text-white">
-                  Vehicle details
+                  Owner details
                 </h2>
               </div>
               <form onSubmit={handleSubmit}>
@@ -114,20 +132,32 @@ const FormLayout = () => {
                       />
                     </div>
                   </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
 
-                  <div className="mb-4.5">
-                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                      Vehicle type
-                    </label>
-                    <input
-                      type="text"
-                      name="vehicleType"
-                      value={formData.vehicleType}
-                      onChange={handleChange}
-                      placeholder="car,van...etc"
-                      className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                    />
-                  </div>
+        <div className="flex flex-col gap-9"></div>
+      </div>
+
+      {/* <div className="grid grid-cols-1 gap-9 sm:grid-cols-2"> */}
+      <div className="grid grid-cols-1 gap-9">
+        <div className="grid grid-cols-1 gap-9">
+          <div className="flex flex-col gap-9">
+            {/* VEHICLE DETAILS */}
+            <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+              <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
+                <h2 className="font-medium text-blue-700 dark:text-white">
+                  Vehicle details
+                </h2>
+              </div>
+              <form onSubmit={handleSubmit}>
+                <div className="p-6.5">
+                  <SelectGroupType
+                    selectedType={formData.vehicleType}
+                    onTypeChange={handleChange}
+                  />
 
                   <div className="mb-4.5">
                     <label className="mb-3 block text-sm font-medium text-black dark:text-white">
@@ -162,6 +192,34 @@ const FormLayout = () => {
                     onBrandChange={handleChange}
                   />
 
+                  <div className="mb-4.5">
+                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                      No of Seats
+                    </label>
+                    <input
+                      type="number"
+                      name="No_of_Seats"
+                      value={formData.No_of_Seats}
+                      onChange={handleChange}
+                      placeholder="Seats"
+                      className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    />
+                  </div>
+
+                  <div className="mb-4.5">
+                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                      Mileage
+                    </label>
+                    <input
+                      type="text"
+                      name="mileage"
+                      value={formData.mileage}
+                      onChange={handleChange}
+                      placeholder="Permitted mileage per day"
+                      className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    />
+                  </div>
+
                   {/* <!-- File upload --> */}
                   <div className="w-full xl:w-1/2">
                     <label className="mb-3 block text-sm font-medium text-black dark:text-white">
@@ -181,6 +239,58 @@ const FormLayout = () => {
                       </div>
                     </div>
                   </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-9"></div>
+      </div>
+
+      {/* Additinal data---------------------------------------------------- */}
+      {/* <div className="grid grid-cols-1 gap-9 sm:grid-cols-2"> */}
+      <div className="grid grid-cols-1 gap-9">
+        <div className="grid grid-cols-1 gap-9">
+          <div className="flex flex-col gap-9">
+            {/* Additional DETAILS */}
+            <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+              <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
+                <h2 className="font-medium text-blue-700 dark:text-white">
+                  Additional details
+                </h2>
+              </div>
+              <form onSubmit={handleSubmit}>
+                <div className="p-6.5">
+                  <div className="columns-2">
+                    <div className="mb-4.5">
+                      <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                        Location
+                      </label>
+                      <input
+                        type="text"
+                        name="Latitude"
+                        value={formData.Latitude}
+                        onChange={handleChange}
+                        placeholder="Enter Latitude"
+                        className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-white dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                      />
+                    </div>
+
+                    <div className="mb-4.5">
+                      <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                        .
+                      </label>
+                      <input
+                        type="text"
+                        name="Longitude"
+                        value={formData.Longitude}
+                        onChange={handleChange}
+                        placeholder="Enter Longitude"
+                        className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-white dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                      />
+                    </div>
+                  </div>
 
                   <div className="mb-4.5">
                     <label className="mb-3 block text-sm font-medium text-black dark:text-white">
@@ -191,13 +301,13 @@ const FormLayout = () => {
                       name="price"
                       value={formData.price}
                       onChange={handleChange}
-                      placeholder="rent price"
-                      className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                      placeholder="Rent Price"
+                      className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-white dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     />
                   </div>
 
                   <div className="mb-6 gap-1.5">
-                    <label className="mb-3 block text-sm font-medium text-black dark:text-white ">
+                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
                       Description
                     </label>
                     <textarea
@@ -206,11 +316,11 @@ const FormLayout = () => {
                       value={formData.description}
                       onChange={handleChange}
                       placeholder="Type your message"
-                      className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                      className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-white dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     ></textarea>
                   </div>
 
-                  <button className="flex w-full justify-center rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-90">
+                  <button className="flex w-full justify-center rounded bg-primary p-3 font-medium text-white hover:bg-opacity-90">
                     Add Vehicle
                   </button>
                 </div>

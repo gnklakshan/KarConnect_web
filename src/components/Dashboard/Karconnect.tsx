@@ -1,5 +1,4 @@
 "use client";
-import useAuth from "@/hooks/useAuth";
 import dynamic from "next/dynamic";
 import ChartOne from "../Charts/ChartOne";
 import ChartTwo from "../Charts/ChartTwo";
@@ -10,8 +9,6 @@ import Link from "next/link";
 import React, { useState, useEffect } from "react";
 import "../../firebaseConfig";
 import { getFirestore, addDoc, collection, getDocs } from "firebase/firestore";
-import withAuth from "@/hooks/withAuth";
-//  import useAuth from "@/hooks/useAuth";
 
 const MapOne = dynamic(() => import("@/components/Maps/MapOne"), {
   ssr: false,
@@ -22,8 +19,6 @@ const ChartThree = dynamic(() => import("@/components/Charts/ChartThree"), {
 });
 
 const ECommerce: React.FC = () => {
-  useAuth();
-
   const [userCount, setUserCount] = useState<number | null>(null);
   const [vehicleCount, setVehicleCount] = useState<number | null>(null);
   useEffect(() => {
@@ -69,6 +64,7 @@ const ECommerce: React.FC = () => {
           View Request
         </Link>
       </div>
+
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-4 2xl:gap-7.5">
         <CardDataStats
           title="Total Vehicles"
@@ -220,11 +216,11 @@ const ECommerce: React.FC = () => {
       <div className="mt-4 grid grid-cols-12 gap-4 md:mt-6 md:gap-6 2xl:mt-7.5 2xl:gap-7.5">
         <ChartOne />
         <ChartTwo />
-        {/* <ChartThree /> */}
-        {/* <MapOne /> */}
-        {/* <div className="col-span-12 xl:col-span-8">
+        <ChartThree />
+        <MapOne />
+        <div className="col-span-12 xl:col-span-8">
           <TableOne />
-        </div> */}
+        </div>
         {/* <ChatCard /> */}
       </div>
     </>
