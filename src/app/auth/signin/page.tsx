@@ -739,11 +739,7 @@ const SignIn: React.FC = () => {
           </form>
         </div>
       </div>
-      //{" "}
     </div>
-    // //{" "}
-    // </div>
-    // </DefaultLayout>
   );
 };
 
