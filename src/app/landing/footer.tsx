@@ -18,7 +18,7 @@ const Footer: React.FC = () => {
               </p>
             </div>
             <Image
-              src="/images/logo/teamlogo.png" // Replace with your image URL
+              src="./images/logo/teamlogo.png" // Replace with your image URL
               alt="Team Logo"
               width={300} // Adjust width
               height={80} // Adjust height

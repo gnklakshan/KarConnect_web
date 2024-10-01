@@ -7,9 +7,9 @@ import { FlipWords } from "./images-slider";
 
 export function ImagesSliderDemo() {
   const images = [
-    "/images/Carousal/carousel-1.jpg",
-    "/images/Carousal/carousel-2.jpg",
-    "/images/Carousal/hyundai-motor-group-bfLoXCRijvQ-unsplash.jpg",
+    "./images/Carousal/carousel-1.jpg",
+    "./images/Carousal/carousel-2.jpg",
+    "./images/Carousal/hyundai-motor-group-bfLoXCRijvQ-unsplash.jpg",
   ];
   const words = ["affordable", "convenient", "flexible", "luxurious"];
 

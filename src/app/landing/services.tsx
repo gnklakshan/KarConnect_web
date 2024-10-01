@@ -65,38 +65,38 @@ const data = [
     {
       category: "4.5 Review",
       title: "Mercedes Benz R3",
-      src: "/images/product/car-1.png",
+      src: "./images/product/car-1.png",
       content: <DummyContent />,
     },
     {
       category: "3.5 Review",
       title: "Toyota Corolla Cross",
-      src: "/images/product/car-2.png",
+      src: "./images/product/car-2.png",
       content: <DummyContent />,
     },
     {
       category: "3.8 Review",
       title: "Tesla Model S Plaid",
-      src: "/images/product/car-3.png",
+      src: "./images/product/car-3.png",
       content: <DummyContent />,
     },
    
     {
       category: "4.8 Review",
       title: "Hyundai Kona Electric",
-      src: "/images/product/car-3.png",
+      src: "./images/product/car-3.png",
       content: <DummyContent />,
     },
     {
         category: "3.5 Review",
         title: "Toyota Corolla Cross",
-        src: "/images/product/car-2.png",
+        src: "./images/product/car-2.png",
         content: <DummyContent />,
     },
     {
         category: "3.8 Review",
         title: "Tesla Model S Plaid",
-        src: "/images/product/car-3.png",
+        src: "./images/product/car-3.png",
         content: <DummyContent />,
     },
   ];
@@ -173,7 +173,7 @@ export function FeaturesSectionDemo() {
       <div 
         className="absolute inset-0 bg-cover bg-center h-[75vh]" 
         style={{ 
-          backgroundImage: "url('/images/cover/bg-1.jpg')", 
+          backgroundImage: "url('./images/cover/bg-1.jpg')", 
           opacity: 0.9 // Adjust the opacity for the image
         }} 
       />
