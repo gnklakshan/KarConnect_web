@@ -54,7 +54,7 @@ const FeaturesSection: React.FC = () => {
         <div className="md:col-span-1 flex justify-center mb-4">
           
           <Image
-            src="/images/product/car-1.png" 
+            src="./images/product/car-1.png" 
             className="img-fluid w-full max-w-md"
             style={{ objectFit: 'cover' }} 
             alt="Features"
