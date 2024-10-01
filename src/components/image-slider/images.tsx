@@ -2,6 +2,7 @@
 import { motion } from "framer-motion";
 import React from "react";
 import { ImagesSlider } from "./images-slider";
+import Image from "next/image"; 
 import { FlipWords } from "./images-slider";
 
 export function ImagesSliderDemo() {
@@ -37,7 +38,6 @@ export function ImagesSliderDemo() {
                 <br />
                 <span className="inline">space with</span> <span className="text-5xl text-white inline">KarConnect</span>
               </div>
-          
             </div>
             <button className="px-6 py-4 backdrop-blur-sm border bg-blue-300/10 border-blue-500/20 text-white rounded-full relative mt-4">
               <span>Join now →</span>
@@ -46,6 +46,13 @@ export function ImagesSliderDemo() {
           </div>
         </div>
       </motion.div>
+
+      {/* Use the Image component to render images */}
+      <div className="hidden">
+        {images.map((src, index) => (
+          <Image key={index} src={src} alt={`Carousel image ${index + 1}`} width={500} height={300} />
+        ))}
+      </div>
     </ImagesSlider>
   );
 }
@@ -53,7 +60,5 @@ export function ImagesSliderDemo() {
 export function FlipWordsDemo() {
   const words = ["better", "cute", "beautiful", "modern"];
 
-  return (
-   <div></div>
-  );
+  return <div></div>;
 }
