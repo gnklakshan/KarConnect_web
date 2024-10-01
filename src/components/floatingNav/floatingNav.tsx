@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { twMerge } from "tailwind-merge";
-import Image from "next/image"; // Importing the Image component
+import Image from "next/image"; 
 
 interface NavItem {
   name: string;
@@ -15,42 +15,42 @@ interface NavItem {
 const navItems: NavItem[] = [
   {
     name: "Home",
-    link: "/app/landing", // Adjusted path
+    link: "/app/landing", 
     icon: <span>🏠</span>,
   },
   {
     name: "About",
-    link: "/app/landing/about", // Adjusted path
+    link: "/app/landing/about", 
     icon: <span>ℹ️</span>,
   },
   {
     name: "Services",
-    link: "/app/landing/services", // Adjusted path
+    link: "/app/landing/services", 
     icon: <span>💼</span>,
   },
   {
     name: "Contact",
-    link: "/app/landing/footer", // Adjusted path
+    link: "/app/landing/footer", 
     icon: <span>📞</span>,
   },
 ];
 
 export const FloatingNav: React.FC<{ className?: string }> = ({ className }) => {
   const router = useRouter();
-  const [isOpen, setIsOpen] = useState(false); // State for dropdown
-  const [isClient, setIsClient] = useState(false); // Ensure browser compatibility
+  const [isOpen, setIsOpen] = useState(false); 
+  const [isClient, setIsClient] = useState(false); 
 
-  // Ensure this runs only on the client-side
+ 
   useEffect(() => {
     setIsClient(true);
   }, []);
 
   const handleSignIn = () => {
-    router.push("/auth/signin"); // Redirect to the sign-in page
+    router.push("/auth/signin"); 
   };
 
   if (!isClient) {
-    return null; // Avoid rendering during SSR
+    return null; 
   }
 
   return (
@@ -67,11 +67,11 @@ export const FloatingNav: React.FC<{ className?: string }> = ({ className }) => 
         {/* Business Logo and Name */}
         <div className="flex items-center space-x-2">
           <Image
-            src="/images/logo/logo.svg" // Ensure this path is correct
+            src="./images/logo/logo.svg"
             alt="KarConnect Logo"
             className="h-16 w-16"
-            width={64} // Adjust width according to your design
-            height={64} // Adjust height according to your design
+            width={64} 
+            height={64} 
           />
           <span className="text-3xl font-bold dark:text-white text-black">KarConnect</span>
         </div>
@@ -100,7 +100,7 @@ export const FloatingNav: React.FC<{ className?: string }> = ({ className }) => 
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
+            //xmlns="http://www.w3.org/2000/svg"
           >
             <path
               strokeLinecap="round"

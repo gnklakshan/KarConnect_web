@@ -18,10 +18,10 @@ const Footer: React.FC = () => {
               </p>
             </div>
             <Image
-              src="/images/logo/teamlogo.png" // Replace with your image URL
+              src="./images/logo/teamlogo.png"
               alt="Team Logo"
-              width={300} // Adjust width
-              height={80} // Adjust height
+              width={300} 
+              height={80} 
               className="object-cover mb-3"
             />
           </div>
@@ -70,7 +70,7 @@ const Footer: React.FC = () => {
           <div className="flex justify-center md:justify-start mb-4 md:mb-0">
             <span className="text-body">
               <a href="#" className="border-b text-white">
-                <i className="fas fa-copyright text-light me-2"></i>KarConnect.com
+                <i className="fas fa-copyright text-light me-2"></i>https://gnklakshan.github.io/KarConnect_web/
               </a>, All rights reserved.
             </span>
           </div>
