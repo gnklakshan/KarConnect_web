@@ -1,15 +1,15 @@
 "use client";
 import { motion } from "framer-motion";
 import React from "react";
-import { ImagesSlider } from "./images-slider"; // Assuming this component is designed to handle image rendering
+import { ImagesSlider } from "./images-slider"; 
 import Image from "next/image"; 
 import { FlipWords } from "./images-slider";
 
 export function ImagesSliderDemo() {
   const images = [
-    "/images/Carousal/carousel-1.jpg",
-    "/images/Carousal/carousel-2.jpg",
-    "/images/Carousal/hyundai-motor-group-bfLoXCRijvQ-unsplash.jpg",
+    "./images/Carousal/carousel-1.jpg",
+    "./images/Carousal/carousel-2.jpg",
+    "./images/Carousal/hyundai-motor-group-bfLoXCRijvQ-unsplash.jpg",
   ];
   const words = ["affordable", "convenient", "flexible", "luxurious"];
 
@@ -57,7 +57,6 @@ export function ImagesSliderDemo() {
 }
 
 export function FlipWordsDemo() {
-  const words = ["better", "cute", "beautiful", "modern"];
 
   return <div></div>;
 }
