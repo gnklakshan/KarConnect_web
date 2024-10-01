@@ -1,6 +1,7 @@
 "use client";
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import React, { useEffect, useState, useRef } from "react";
+import Image from 'next/image';
 
 interface CounterProps {
   icon: string;
@@ -15,22 +16,23 @@ const CounterItem: React.FC<CounterProps> = ({ icon, start, end, label }) => {
   const counterRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
+    const refValue = counterRef.current;
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting) {
           setIsVisible(true);
         }
       },
-      { threshold: 0.5 } // Trigger when 50% of the element is visible
+      { threshold: 0.5 }
     );
 
-    if (counterRef.current) {
-      observer.observe(counterRef.current);
+    if (refValue) {
+      observer.observe(refValue);
     }
 
     return () => {
-      if (counterRef.current) {
-        observer.unobserve(counterRef.current);
+      if (refValue) {
+        observer.unobserve(refValue);
       }
     };
   }, []);
@@ -62,7 +64,7 @@ const CounterItem: React.FC<CounterProps> = ({ icon, start, end, label }) => {
         <span className="text-white text-3xl font-bold">{count}</span>
         <span className="text-white text-3xl font-bold">+</span>
       </div>
-      <h4 className=" text-xl text-white">{label}</h4>
+      <h4 className="text-xl text-white">{label}</h4>
     </div>
   );
 };
@@ -80,9 +82,9 @@ export const AboutSection = () => {
                   KarConnect <span className="text-primary">About</span>
                 </h1>
                 <p className="mb-0 text-black text-center">
-                  At KarConnect, we are committed to revolutionizing the way
+                  At KarConnect, we&apos;re committed to revolutionizing the way
                   people connect with automotive care. With a deep understanding
-                  of the industry's challenges, we blend innovation with
+                  of the industry&apos;s challenges, we blend innovation with
                   convenience to deliver unmatched services to our customers. Our
                   goal is to make car maintenance and repairs effortless, ensuring
                   peace of mind on every journey.
@@ -92,9 +94,10 @@ export const AboutSection = () => {
               <div className="flex flex-col md:flex-row gap-4 text-black">
                 <div className="border p-4 flex-1">
                   <div className="mb-4">
-                    <img
+                    <Image
                       src="/images/product/about-icon-1.png"
-                      className="w-20 h-20"
+                      width={80}
+                      height={80}
                       alt="Vision Icon"
                     />
                   </div>
@@ -109,9 +112,10 @@ export const AboutSection = () => {
                 </div>
                 <div className="border p-4 flex-1">
                   <div className="mb-4">
-                    <img
+                    <Image
                       src="/images/product/about-icon-2.png"
-                      className="w-20 h-20"
+                      width={80}
+                      height={80}
                       alt="Mission Icon"
                     />
                   </div>
@@ -127,7 +131,7 @@ export const AboutSection = () => {
               </div>
               {/* Years of Experience */}
               <p className="my-4 text-black">
-                With over 2 years of experience in the automotive industry, we've
+                With over 2 years of experience in the automotive industry, we&apos;ve
                 mastered the art of delivering value:
               </p>
               <div className="flex flex-col md:flex-row gap-4 text-black">
@@ -166,38 +170,40 @@ export const AboutSection = () => {
           {/* Right section with images */}
           <div className="flex-1 flex relative">
             <div className="img-1 flex-1">
-              <img
+              <Image
                 src="/images/product/about-img.jpg"
-                className="rounded-lg w-3/5 h-125"
+                width={600}
+                height={500}
+                className="rounded-lg"
                 alt="Main Image"
               />
             </div>
             <div className="img-2 absolute top-90 left-1/4 w-3/4">
-              <img
+              <Image
                 src="/images/product/about-img-1.jpg"
-                className="rounded-lg w-4/5 h-auto"
+                width={400}
+                height={300}
+                className="rounded-lg"
                 alt="Overlay Image"
               />
             </div>
           </div>
         </div>
       </div>
-  <div
-  className="bg-secondary py-5 flex items-center justify-center relative bg-cover bg-center h-[75vh]" // Full viewport height for centering
-  style={{ backgroundImage: "url('/images/cover/fact-bg.jpg')" }}
->
-  {/* Dark overlay */}
-  <div className="absolute inset-0 bg-black opacity-80"></div>
+      <div
+        className="bg-secondary py-5 flex items-center justify-center relative bg-cover bg-center h-[75vh]" // Full viewport height for centering
+        style={{ backgroundImage: "url('/images/cover/fact-bg.jpg')" }}
+      >
+        {/* Dark overlay */}
+        <div className="absolute inset-0 bg-black opacity-80"></div>
 
-  <div className="relative grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5 w-full justify-items-center z-10"> {/* Ensuring it's above the overlay */}
-    <CounterItem icon="fa-thumbs-up" start={0} end={829} label="Happy Customers" />
-    <CounterItem icon="fa-car-alt" start={0} end={56} label="Number of Cars" />
-    <CounterItem icon="fa-id-badge" start={0} end={127} label="Car Owners" />
-    <CounterItem icon="fa-handshake" start={0} end={589} label="Total Deals" />
-  </div>
-</div>
-
-
+        <div className="relative grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5 w-full justify-items-center z-10"> {/* Ensuring it's above the overlay */}
+          <CounterItem icon="fa-thumbs-up" start={0} end={829} label="Happy Customers" />
+          <CounterItem icon="fa-car-alt" start={0} end={56} label="Number of Cars" />
+          <CounterItem icon="fa-id-badge" start={0} end={127} label="Car Owners" />
+          <CounterItem icon="fa-handshake" start={0} end={589} label="Total Deals" />
+        </div>
+      </div>
     </div>
   );
 };

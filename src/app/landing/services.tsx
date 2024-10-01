@@ -18,7 +18,7 @@ const DummyContent = () => {
       <>
         {[...new Array(1).fill(1)].map((_, index) => {
           return (
-            <div className="categories-content rounded-bottom p-4">
+            <div key={index} className="categories-content rounded-bottom p-4">
                                 <h4>Mercedes Benz R3</h4>
                                 <div className="categories-review mb-4">
                                     <div className="me-3">4.5 Review</div>
