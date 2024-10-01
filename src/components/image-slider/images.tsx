@@ -1,7 +1,7 @@
 "use client";
 import { motion } from "framer-motion";
 import React from "react";
-import { ImagesSlider } from "./images-slider";
+import { ImagesSlider } from "./images-slider"; // Assuming this component is designed to handle image rendering
 import Image from "next/image"; 
 import { FlipWords } from "./images-slider";
 
@@ -16,17 +16,9 @@ export function ImagesSliderDemo() {
   return (
     <ImagesSlider className="h-[40rem]" images={images}>
       <motion.div
-        initial={{
-          opacity: 0,
-          y: -80,
-        }}
-        animate={{
-          opacity: 1,
-          y: 0,
-        }}
-        transition={{
-          duration: 0.6,
-        }}
+        initial={{ opacity: 0, y: -80 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
         className="z-50 flex flex-col justify-start items-start px-4 sm:px-8 lg:px-16 w-full"
       >
         <div className="ml-15">
@@ -47,10 +39,17 @@ export function ImagesSliderDemo() {
         </div>
       </motion.div>
 
-      {/* Use the Image component to render images */}
-      <div className="hidden">
+      {/* Render images directly using Image component */}
+      <div className="relative w-full h-full">
         {images.map((src, index) => (
-          <Image key={index} src={src} alt={`Carousel image ${index + 1}`} width={500} height={300} />
+          <Image 
+            key={index} 
+            src={src} 
+            alt={`Carousel image ${index + 1}`} 
+            layout="fill" 
+            objectFit="cover" 
+            className="absolute inset-0"
+          />
         ))}
       </div>
     </ImagesSlider>

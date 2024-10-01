@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { twMerge } from "tailwind-merge";
+import Image from "next/image"; // Importing the Image component
 
 interface NavItem {
   name: string;
@@ -65,7 +66,13 @@ export const FloatingNav: React.FC<{ className?: string }> = ({ className }) => 
       >
         {/* Business Logo and Name */}
         <div className="flex items-center space-x-2">
-          <img src="/images/logo/logo.svg" alt="KarConnect Logo" className="h-16 w-16 transform scale-150" />
+          <Image
+            src="/images/logo/logo.svg" // Ensure this path is correct
+            alt="KarConnect Logo"
+            className="h-16 w-16"
+            width={64} // Adjust width according to your design
+            height={64} // Adjust height according to your design
+          />
           <span className="text-3xl font-bold dark:text-white text-black">KarConnect</span>
         </div>
 

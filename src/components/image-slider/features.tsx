@@ -1,5 +1,6 @@
 import React from 'react';
 import { FaCar, FaClock, FaComments, FaDollarSign } from 'react-icons/fa';
+import Image from 'next/image';
 
 const FeatureItem = ({
   icon,
@@ -51,7 +52,15 @@ const FeaturesSection: React.FC = () => {
           </div>
         </div>
         <div className="md:col-span-1 flex justify-center mb-4">
-          <img src="/images/product/car-1.png" className="img-fluid w-full max-w-md" style={{ objectFit: 'cover' }} alt="Features" />
+          
+          <Image
+            src="/images/product/car-1.png" 
+            className="img-fluid w-full max-w-md"
+            style={{ objectFit: 'cover' }} 
+            alt="Features"
+            width={450} 
+            height={200}
+          />
         </div>
         <div className="md:col-span-1 mb-4 space-y-20">
           <div>

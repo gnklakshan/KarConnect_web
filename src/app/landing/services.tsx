@@ -183,7 +183,7 @@ export function FeaturesSectionDemo() {
 
       <div className="relative z-10 text-center pb-5 mt-5" style={{ maxWidth: '800px' }}>
         <h1 className="display-5 text-capitalize mb-3 text-5xl text-white">
-          Central<span className="text-primary"> Process</span>
+          KarConnect<span className="text-primary"> Process</span>
         </h1>
         <p className="mb-0 text-white">
         Our vehicle rental application streamlines the process into three simple steps: Register Your Vehicle, Mark Available, and Rent Your Vahicle once the rental is Confirmed.        </p>

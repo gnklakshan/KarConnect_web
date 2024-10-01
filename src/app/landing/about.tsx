@@ -172,17 +172,17 @@ export const AboutSection = () => {
             <div className="img-1 flex-1">
               <Image
                 src="/images/product/about-img.jpg"
-                width={600}
-                height={500}
+                width={500}
+                height={300}
                 className="rounded-lg"
                 alt="Main Image"
               />
             </div>
-            <div className="img-2 absolute top-90 left-1/4 w-3/4">
+            <div className="img-2 absolute top-100 left-1/4 w-3/4">
               <Image
                 src="/images/product/about-img-1.jpg"
                 width={400}
-                height={300}
+                height={400}
                 className="rounded-lg"
                 alt="Overlay Image"
               />
@@ -190,10 +190,14 @@ export const AboutSection = () => {
           </div>
         </div>
       </div>
-      <div
-        className="bg-secondary py-5 flex items-center justify-center relative bg-cover bg-center h-[75vh]" // Full viewport height for centering
-        style={{ backgroundImage: "url('/images/cover/fact-bg.jpg')" }}
-      >
+      <div className="relative flex items-center justify-center h-[75vh]"> {/* Full viewport height for centering */}
+        <Image
+          src="/images/cover/fact-bg.jpg"
+          alt="Background Image"
+          layout="fill" // Use fill for background images
+          objectFit="cover" // Cover will scale the image
+          className="absolute inset-0 z-0" // Position it as the background
+        />
         {/* Dark overlay */}
         <div className="absolute inset-0 bg-black opacity-80"></div>
 
@@ -203,7 +207,7 @@ export const AboutSection = () => {
           <CounterItem icon="fa-id-badge" start={0} end={127} label="Car Owners" />
           <CounterItem icon="fa-handshake" start={0} end={589} label="Total Deals" />
         </div>
-      </div>
+        </div>
     </div>
   );
 };
