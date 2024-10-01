@@ -241,3 +241,32 @@ input[type="search"]::-webkit-search-cancel-button {
 [x-cloak] {
     display: none !important;
 }
+
+.about .about-item .about-item-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    border-radius: 10px;
+    background: var(--bs-light);
+    transition: 0.5s;
+}
+
+.about .about-item .about-item-inner .about-icon {
+    width: 90px; 
+    height: 90px; 
+    border-radius: 67% 33% 29% 71% / 39% 46% 54% 61%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--bs-secondary);
+    background: var(--bs-primary);
+    animation-name: icon-animat;
+    animation-duration: 5s;
+    animation-delay: 1s;
+    animation-direction: alternate;
+    animation-iteration-count: infinite;
+    transition: 0.5s;
+}
+ 

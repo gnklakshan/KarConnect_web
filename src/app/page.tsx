@@ -409,6 +409,8 @@
 "use client";
 import { useRouter } from "next/navigation";
 import React from "react";
+import LandingPage from "./landing/page";
+
 
 const HomePage = () => {
   const router = useRouter();
@@ -418,15 +420,16 @@ const HomePage = () => {
   };
 
   return (
-    <div className="bg-gray-100 flex min-h-screen flex-col items-center justify-center">
-      <h1 className="mb-8 text-4xl font-bold">Welcome to KarConnect</h1>
-      <button
-        onClick={handleSignIn}
-        className="rounded-lg bg-blue-500 px-6 py-3 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-50"
-      >
-        Go to Sign In
-      </button>
-    </div>
+   // <div className="bg-gray-100 flex min-h-screen flex-col items-center justify-center">
+    //  <h1 className="mb-8 text-4xl font-bold">Welcome to KarConnect</h1>
+    //  <button
+    //    onClick={handleSignIn}
+     //   className="rounded-lg bg-blue-500 px-6 py-3 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-50"
+     // >
+      //  Go to Sign In
+    //  </button>
+   // </div>
+   <LandingPage/>
   );
 };
 
