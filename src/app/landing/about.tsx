@@ -95,7 +95,7 @@ export const AboutSection = () => {
                 <div className="border p-4 flex-1">
                   <div className="mb-4">
                     <Image
-                      src="./images/product/about-icon-1.png"
+                      src="/images/product/about-icon-1.png"
                       width={80}
                       height={80}
                       alt="Vision Icon"
@@ -113,7 +113,7 @@ export const AboutSection = () => {
                 <div className="border p-4 flex-1">
                   <div className="mb-4">
                     <Image
-                      src="./images/product/about-icon-2.png"
+                      src="/images/product/about-icon-2.png"
                       width={80}
                       height={80}
                       alt="Mission Icon"
@@ -171,7 +171,7 @@ export const AboutSection = () => {
           <div className="flex-1 flex relative">
             <div className="img-1 flex-1">
               <Image
-                src="./images/product/about-img.jpg"
+                src="/images/product/about-img.jpg"
                 width={500}
                 height={300}
                 className="rounded-lg"
@@ -180,7 +180,7 @@ export const AboutSection = () => {
             </div>
             <div className="img-2 absolute top-100 left-1/4 w-3/4">
               <Image
-                src="./images/product/about-img-1.jpg"
+                src="/images/product/about-img-1.jpg"
                 width={400}
                 height={400}
                 className="rounded-lg"
@@ -192,7 +192,7 @@ export const AboutSection = () => {
       </div>
       <div className="relative flex items-center justify-center h-[75vh]"> {/* Full viewport height for centering */}
         <Image
-          src="./images/cover/fact-bg.jpg"
+          src="/images/cover/fact-bg.jpg"
           alt="Background Image"
           layout="fill" // Use fill for background images
           objectFit="cover" // Cover will scale the image

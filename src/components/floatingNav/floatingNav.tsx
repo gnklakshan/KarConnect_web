@@ -67,7 +67,7 @@ export const FloatingNav: React.FC<{ className?: string }> = ({ className }) => 
         {/* Business Logo and Name */}
         <div className="flex items-center space-x-2">
           <Image
-            src="./images/logo/logo.svg" // Ensure this path is correct
+            src="/images/logo/logo.svg" // Ensure this path is correct
             alt="KarConnect Logo"
             className="h-16 w-16"
             width={64} // Adjust width according to your design
