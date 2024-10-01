@@ -65,38 +65,38 @@ const data = [
     {
       category: "4.5 Review",
       title: "Mercedes Benz R3",
-      src: "/images/product/car-1.png",
+      src: "./images/product/car-1.png",
       content: <DummyContent />,
     },
     {
       category: "3.5 Review",
       title: "Toyota Corolla Cross",
-      src: "/images/product/car-2.png",
+      src: "./images/product/car-2.png",
       content: <DummyContent />,
     },
     {
       category: "3.8 Review",
       title: "Tesla Model S Plaid",
-      src: "/images/product/car-3.png",
+      src: "./images/product/car-3.png",
       content: <DummyContent />,
     },
    
     {
       category: "4.8 Review",
       title: "Hyundai Kona Electric",
-      src: "/images/product/car-3.png",
+      src: "./images/product/car-3.png",
       content: <DummyContent />,
     },
     {
         category: "3.5 Review",
         title: "Toyota Corolla Cross",
-        src: "/images/product/car-2.png",
+        src: "./images/product/car-2.png",
         content: <DummyContent />,
     },
     {
         category: "3.8 Review",
         title: "Tesla Model S Plaid",
-        src: "/images/product/car-3.png",
+        src: "./images/product/car-3.png",
         content: <DummyContent />,
     },
   ];
@@ -170,16 +170,16 @@ export function FeaturesSectionDemo() {
       {/* Process Step*/}
       <div className="relative py-5 flex flex-col items-center">
       {/* Background Image */}
-      <div 
-        className="absolute inset-0 bg-cover bg-center h-[75vh]" 
-        style={{ 
-          backgroundImage: "url('/images/cover/bg-1.jpg')", 
-          opacity: 0.9 // Adjust the opacity for the image
-        }} 
-      />
-      
-      {/* Dark Overlay */}
-      <div className="absolute inset-0 bg-black opacity-90 h-[75vh]" />
+      <div className="absolute inset-0 h-[75vh]"> 
+    <Image
+      src="./images/cover/bg-1.jpg" 
+      layout="fill" 
+      objectFit="cover" 
+      alt="Background Image"
+      style={{ opacity: 0.9 }} 
+    />
+  </div>
+  <div className="absolute inset-0 bg-black opacity-90 h-[75vh]" />
 
       <div className="relative z-10 text-center pb-5 mt-5" style={{ maxWidth: '800px' }}>
         <h1 className="display-5 text-capitalize mb-3 text-5xl text-white">
