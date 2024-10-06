@@ -609,7 +609,7 @@ const BookingPage: React.FC = () => {
     ) => {
       try {
         const db = getFirestore();
-
+    
         // Fetch vehicle data
         const vehicleDoc = await getDoc(doc(db, "vehicle_db", vehicleId));
         if (!vehicleDoc.exists()) {
@@ -617,54 +617,54 @@ const BookingPage: React.FC = () => {
           return;
         }
         const vehicleData = vehicleDoc.data() as VehicleData;
-
+    
         // Fetch rental data
         const rentRef = collection(db, "users", rentUser, "rent_vehicles");
         const rentQuerySnapshot = await getDocs(rentRef);
-        const rentalDocs = rentQuerySnapshot.docs.map(
-          (doc) => doc.data() as RentData,
-        );
-
-        // Find rental data for the specific booking
-        const rentalDataForBooking = rentalDocs.find(
-          (rent) => rent.VehicleID === vehicleId,
-        );
-        if (!rentalDataForBooking) {
-          console.log(`No rental data found for VehicleID: ${vehicleId}`);
-          return;
+        const rentalDocs = rentQuerySnapshot.docs
+          .map((doc) => doc.data() as RentData)
+          .filter((rent) => rent.VehicleID === vehicleId && rent.confirm==1); // Only confirmed rentals for this vehicle
+    
+        // Initialize earnings for the month
+        let totalEarnings = 0;
+    
+        // Loop through each confirmed rental to calculate earnings
+        for (const rental of rentalDocs) {
+          // Parse dates from strings
+          const startDate = new Date(rental.StartDate);
+          const endDate = new Date(rental.EndDate);
+    
+          // Validate dates
+          if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
+            console.error("Invalid dates:", rental.StartDate, rental.EndDate);
+            continue;
+          }
+    
+          // Calculate rental duration in days
+          const diffInDays = Math.ceil(
+            (endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24)
+          );
+    
+          // Convert price to number
+          const pricePerDay = Number(vehicleData.price);
+          if (isNaN(pricePerDay)) {
+            console.error("Invalid price:", vehicleData.price);
+            continue;
+          }
+    
+          // Calculate earnings for this rental and add to total
+          const earnings = pricePerDay * diffInDays;
+          totalEarnings += earnings;
         }
-
-        // Parse dates
-        const startDate = new Date(rentalDataForBooking.StartDate);
-        const endDate = new Date(rentalDataForBooking.EndDate);
-
-        // Validate dates
-        if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
-          console.error("Invalid dates:", startDate, endDate);
-          return;
-        }
-
-        // Calculate rental duration in days
-        const diffInDays = Math.ceil(
-          (endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24),
-        );
-
-        // Convert price to number
-        const pricePerDay = Number(vehicleData.price);
-        if (isNaN(pricePerDay)) {
-          console.error("Invalid price:", vehicleData.price);
-          return;
-        }
-
-        // Calculate earnings
-        const earnings = pricePerDay * diffInDays;
-
-        // Update the state with the calculated earnings
-        setMonthlyEarnings((prevEarnings) => prevEarnings + earnings);
+    
+        // Update the state with the calculated monthly earnings
+        setMonthlyEarnings((prevEarnings) => prevEarnings + totalEarnings);
       } catch (error) {
         console.error(`Error calculating monthly earnings:`, error);
       }
     };
+    
+    
 
     const applyFilters = (bookingsData: BookingData[]) => {
       const filteredBookings = bookingsData.filter((booking) => {
@@ -709,7 +709,7 @@ const BookingPage: React.FC = () => {
     };
 
     fetchBookingData();
-  }, [statusFilter, vehicleFilter, dateFilter]); // Dependencies
+  }, [statusFilter, vehicleFilter, dateFilter]);
 
   const handleConfirm = async (bookingId: string, RentUser: string) => {
     if (window.confirm("Are you sure you want to confirm this booking?")) {
@@ -830,9 +830,16 @@ const BookingPage: React.FC = () => {
           </section>
 
           <section className="mb-8 rounded-lg bg-white p-6 shadow dark:bg-boxdark">
-            <h2 className="text-primary-color mb-4 text-2xl font-bold">
-              Booking Requests
-            </h2>
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-primary-color text-2xl font-bold">
+                Booking Requests
+              </h2>
+              <Link href="/manage/confiremed-rent">
+                <button className="px-4 py-2 bg-blue-600 text-white font-bold rounded hover:bg-blue-700 transition">
+                  View Confirmed Rents
+                </button>
+              </Link>
+            </div>
             <div className="flex flex-wrap gap-4">
               <div>
                 <select
@@ -874,78 +881,67 @@ const BookingPage: React.FC = () => {
             </div>
 
             <div>
-              {bookingData.map((booking) => {
-                const user = users[booking.RentUser];
-                const rent = rentalData[booking.id];
-                const vehicle = vehicledData[booking.VehicleID];
+  {bookingData
+    .filter((booking) => booking.pending === 1)
+    .map((booking) => {
+      const user = users[booking.RentUser];
+      const rent = rentalData[booking.id];
+      const vehicle = vehicledData[booking.VehicleID];
 
-                return (
-                  <div
-                    key={booking.id}
-                    className="flex flex-wrap items-center justify-between border-b py-4"
-                  >
-                    <div>
-                      <h3 className="font-bold">
-                        {user?.first_name + " " + user?.last_name ||
-                          booking.RentUser}
-                      </h3>
-                      {vehicle ? (
-                        <p>{vehicle.brand + " " + vehicle.name}</p>
-                      ) : (
-                        <p>Vehicle details not available</p>
-                      )}
-                      {rent && (
-                        <>
-                          <p>
-                            From {rent.StartDate} To {rent.EndDate}
-                          </p>
-                        </>
-                      )}
-                      <span
-                        className={`inline-block rounded-full px-2 py-1 text-sm font-bold text-rose-400 status-${booking.pending ? "pending" : booking.confirm ? "confirmed" : "cancelled"}`}
-                      >
-                        {booking.pending
-                          ? "Pending"
-                          : booking.confirm
-                            ? "Confirmed"
-                            : "Cancelled"}
-                      </span>
-                    </div>
-                    <div className="mt-4 flex flex-wrap justify-end gap-2 md:mt-0">
-                      {booking.pending === 1 && (
-                        <>
-                          <Link href="#">
-                            <button
-                              className="bg-success-color rounded bg-green-500 px-4 py-2 text-white"
-                              onClick={() =>
-                                handleConfirm(booking.id, booking.RentUser)
-                              }
-                            >
-                              Confirm
-                            </button>
-                          </Link>
-                          <Link href="#">
-                            <button
-                              className="bg-danger-color rounded bg-red px-4 py-2 text-white"
-                              onClick={() =>
-                                handleCancel(booking.id, booking.RentUser)
-                              }
-                            >
-                              Cancel
-                            </button>
-                          </Link>
-                        </>
-                      )}
-                      <Link href="#">
-                        <button className="bg-primary-color rounded bg-orange-300 px-4 py-2 text-white">
-                          Message
-                        </button>
-                      </Link>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
+      return (
+        <div
+          key={booking.id}
+          className="flex flex-wrap items-center justify-between border-b py-4"
+        >
+          <div>
+            <h3 className="font-bold">
+              {user?.first_name + " " + user?.last_name || booking.RentUser}
+            </h3>
+            {vehicle ? (
+              <p>{vehicle.brand + " " + vehicle.name}</p>
+            ) : (
+              <p>Vehicle details not available</p>
+            )}
+            {rent && (
+              <>
+                <p>
+                  From {rent.StartDate} To {rent.EndDate}
+                </p>
+              </>
+            )}
+            <span
+              className={`inline-block rounded-full px-2 py-1 text-sm font-bold text-rose-400 status-pending`}
+            >
+              Pending
+            </span>
+          </div>
+          <div className="mt-4 flex flex-wrap justify-end gap-2 md:mt-0">
+            <Link href="#">
+              <button
+                className="bg-success-color rounded bg-green-500 px-4 py-2 text-white"
+                onClick={() => handleConfirm(booking.id, booking.RentUser)}
+              >
+                Confirm
+              </button>
+            </Link>
+            <Link href="#">
+              <button
+                className="bg-danger-color rounded bg-red px-4 py-2 text-white"
+                onClick={() => handleCancel(booking.id, booking.RentUser)}
+              >
+                Cancel
+              </button>
+            </Link>
+            <Link href="#">
+              <button className="bg-primary-color rounded bg-orange-300 px-4 py-2 text-white">
+                Message
+              </button>
+            </Link>
+          </div>
+        </div>
+      );
+    })}
+</div>
           </section>
         </main>
       </div>
