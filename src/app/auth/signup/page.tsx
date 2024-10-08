@@ -62,7 +62,7 @@ const SignUp: React.FC = () => {
       // console.log("User added with ID: ", res.id); // Log the new document ID
       // Optionally, redirect or dispatch user login state
       // redirect("/main");
-      route.push("/main");
+      route.push("/payment_gateway/payment_gateway");
     } catch (error) {
       console.error("Error creating user: ", error);
       setError(true); // Handle error state
