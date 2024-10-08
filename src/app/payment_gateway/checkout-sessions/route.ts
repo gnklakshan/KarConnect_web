@@ -49,6 +49,11 @@ export async function POST(req: Request) {
     if (error instanceof Stripe.errors.StripeError) {
       const { message } = error;
       return NextResponse.json({ message }, { status: error.statusCode });
+    } else {
+      return NextResponse.json(
+        { message: "An unexpected error occurred" },
+        { status: 500 }
+      );
     }
   }
 }
