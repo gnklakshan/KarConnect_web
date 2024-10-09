@@ -12,7 +12,11 @@ export interface CheckoutSubscriptionBody {
 
 export async function POST(req: Request) {
   const body = (await req.json()) as CheckoutSubscriptionBody;
-  const origin = req.headers.get("origin") || "http://localhost:3000";
+  // const origin = req.headers.get("origin") || "http://localhost:3000";
+  const origin =
+  process.env.NODE_ENV === "production"
+    ? process.env.NEXT_PUBLIC_APP_URL // production URL 
+    : req.headers.get("origin") || "http://localhost:3000"; // Default to localhost for development
 
   // if user is logged in, redirect to thank you page, otherwise redirect to signup page.
   const success_url = !body.customerId
