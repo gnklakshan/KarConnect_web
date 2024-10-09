@@ -22,6 +22,7 @@ interface PricingCardProps extends PricingPlan {
   isSelected: boolean;
   onClick: () => void;
   onChoose: (amount: number) => void;
+  isLoading: boolean;
 }
 
 const PricingCard: React.FC<PricingCardProps> = ({
@@ -32,6 +33,7 @@ const PricingCard: React.FC<PricingCardProps> = ({
   isSelected,
   onClick,
   onChoose,
+  isLoading,
 }) => (
   <div
     onClick={onClick}
@@ -65,12 +67,13 @@ const PricingCard: React.FC<PricingCardProps> = ({
       </div>
 
       <button
-        onClick={() => onChoose(price)}
+        onClick={() => !isLoading && onChoose(price)}
         className={`w-full rounded-lg px-4 py-2 font-medium transition-colors ${
           isSelected
             ? "bg-blue-600 text-white hover:bg-blue-700"
             : "bg-blue-100 text-blue-600 hover:bg-blue-200"
-        }`}
+        } ${isLoading ? "cursor-not-allowed opacity-50" : ""}`}
+        disabled={isLoading}
       >
         Choose Plan
       </button>
@@ -80,6 +83,7 @@ const PricingCard: React.FC<PricingCardProps> = ({
 
 const PricingCards = () => {
   const [selectedPlan, setSelectedPlan] = useState<number | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const plans: PricingPlan[] = [
     {
@@ -120,35 +124,52 @@ const PricingCards = () => {
 
   // Define the handleClick function
   const handleClick = async (amount: number) => {
-    // step 1: load stripe
-    const STRIPE_PK = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!;
-    const stripe = await loadStripe(STRIPE_PK);
+    try {
+      setIsLoading(true);
 
-    // step 2: define the data for monthly subscription
-    const body: CheckoutSubscriptionBody = {
-      interval: "month",
-      amount: amount * 100, // Convert to cents
-      plan: "Monthly",
-      planDescription: `Subscribe for LKR ${amount} per month`,
-    };
+      // step 1: load stripe
+      const STRIPE_PK = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!;
+      const stripe = await loadStripe(STRIPE_PK);
 
-    // step 3: make a post fetch api call to /checkout-session handler
-    const result = await fetch("/payment_gateway/checkout-sessions", {
-      method: "post",
-      body: JSON.stringify(body, null),
-      headers: {
-        "content-type": "application/json",
-      },
-    });
+      // step 2: define the data for monthly subscription
+      const body: CheckoutSubscriptionBody = {
+        interval: "month",
+        amount: amount * 100, // Convert to cents
+        plan: "Monthly",
+        planDescription: `Subscribe for LKR ${amount} per month`,
+      };
 
-    // step 4: get the data and redirect to checkout using the sessionId
-    const data = (await result.json()) as Stripe.Checkout.Session;
-    const sessionId = data.id!;
-    stripe?.redirectToCheckout({ sessionId });
+      // step 3: make a post fetch api call to /checkout-session handler
+      const result = await fetch("/payment_gateway/checkout-sessions", {
+        method: "post",
+        body: JSON.stringify(body, null),
+        headers: {
+          "content-type": "application/json",
+        },
+      });
+
+      // step 4: get the data and redirect to checkout using the sessionId
+      const data = (await result.json()) as Stripe.Checkout.Session;
+      const sessionId = data.id!;
+      await stripe?.redirectToCheckout({ sessionId });
+    } catch (error) {
+      console.error("Error during checkout:", error);
+      setIsLoading(false);
+    }
   };
 
   return (
-    <section className="mx-auto max-w-5xl p-6">
+    <section className="relative mx-auto max-w-5xl p-6">
+      {isLoading && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="flex space-x-2">
+            <div className="h-3 w-3 animate-bounce rounded-full bg-blue-700 [animation-delay:-0.3s]"></div>
+            <div className="h-3 w-3 animate-bounce rounded-full bg-blue-700 [animation-delay:-0.15s]"></div>
+            <div className="h-3 w-3 animate-bounce rounded-full bg-blue-700"></div>
+          </div>
+        </div>
+      )}
+
       <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
         {plans.map((plan, index) => (
           <PricingCard
@@ -157,6 +178,7 @@ const PricingCards = () => {
             isSelected={selectedPlan === index}
             onClick={() => setSelectedPlan(index)}
             onChoose={handleClick}
+            isLoading={isLoading}
           />
         ))}
       </div>

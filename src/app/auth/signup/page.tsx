@@ -31,9 +31,11 @@ const SignUp: React.FC = () => {
   const [lastname, setLastname] = useState("");
   const [username, setUsername] = useState("");
   const [packageh, setPackage] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleAdd = async (el: React.FormEvent<HTMLFormElement>) => {
     el.preventDefault();
+    setIsLoading(true);
     const auth = getAuth();
     const userData = {
       firstname,
@@ -70,74 +72,19 @@ const SignUp: React.FC = () => {
     }
   };
 
-  // const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
-  //   e.preventDefault();
-
-  //   const auth = getAuth();
-
-  //   createUserWithEmailAndPassword(auth, email, password)
-  //     .then((userCredential) => {
-  //       // Signed in
-  //       const user = userCredential.user;
-  //       // dispatch({type:"LOGIN",payload:user;})
-  //       console.log(user);
-  //       // redirect("/main");
-
-  //       // ...
-  //     })
-  //     .catch((error) => {
-  //       // const errorCode = error.code;
-  //       //
-  //       //
-  //       // const errorMessage = error.message;
-  //       setError(true);
-  //     });
-  // };
-
-  // const handleAdd = async (el: React.FormEvent<HTMLFormElement>) => {
-  //   el.preventDefault();
-  //   const auth = getAuth();
-
-  //   createUserWithEmailAndPassword(auth, email, password)
-  //     .then((userCredential) => {
-  //       // Signed in
-
-  //       // ...
-  //     })
-  //     .catch((error) => {
-  //       // const errorCode = error.code;
-  //       //
-  //       //
-  //       // const errorMessage = error.message;
-  //       setError(true);
-  //     });
-
-  //     const user = userCredential.user;
-  //       const userID = userCredential.user.uid;
-
-  //       // dispatch({type:"LOGIN",payload:user;})
-  //       console.log(user);
-  //       // redirect("/main");
-  //       const userData = {
-  //         firstname,
-  //         lastname,
-  //         username,
-  //         email,
-  //       };
-
-  //       const res = await addDoc(collection(db, "owners", userID), {
-  //         name: "Los Angeles",
-  //         state: "CA",
-  //         country: "USA",
-  //       });
-
-  //   // console.log(res);
-  // };
-
   return (
     // <DefaultLayout>
     //   <Breadcrumb pageName="Sign Up" />
     <div className="flex justify-center p-6">
+      {isLoading && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60">
+          <div className="flex space-x-2">
+            <div className="h-4 w-4 animate-bounce rounded-full bg-blue-700 [animation-delay:-0.3s]"></div>
+            <div className="h-4 w-4 animate-bounce rounded-full bg-blue-700 [animation-delay:-0.15s]"></div>
+            <div className="h-4 w-4 animate-bounce rounded-full bg-blue-700"></div>
+          </div>
+        </div>
+      )}
       <div className="w-full rounded-sm border border-stroke  bg-white shadow-default dark:border-strokedark dark:bg-boxdark md:w-150 xl:w-180">
         <div className="w-full border-stroke dark:border-strokedark ">
           {/* <div className="w-full border-stroke dark:border-strokedark xl:w-1/2 xl:border-l-2"></div> */}
@@ -158,6 +105,7 @@ const SignUp: React.FC = () => {
                     placeholder="Enter your first name"
                     value={firstname}
                     onChange={(e) => setFirstname(e.target.value)}
+                    disabled={isLoading}
                     className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   />
 
@@ -195,6 +143,7 @@ const SignUp: React.FC = () => {
                     placeholder="Enter your last name"
                     value={lastname}
                     onChange={(e) => setLastname(e.target.value)}
+                    disabled={isLoading}
                     className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   />
 
@@ -232,6 +181,7 @@ const SignUp: React.FC = () => {
                     placeholder="Username"
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
+                    disabled={isLoading}
                     className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   />
 
@@ -307,6 +257,7 @@ const SignUp: React.FC = () => {
                     type="email"
                     placeholder="Enter your email"
                     value={email}
+                    disabled={isLoading}
                     onChange={(e) => setEmail(e.target.value)}
                     className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   />
@@ -340,6 +291,7 @@ const SignUp: React.FC = () => {
                     type="password"
                     placeholder="Enter your password"
                     value={password}
+                    disabled={isLoading}
                     onChange={(e) => setPassword(e.target.value)}
                     className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   />
@@ -376,6 +328,7 @@ const SignUp: React.FC = () => {
                   <input
                     type="password"
                     placeholder="Re-enter your password"
+                    disabled={isLoading}
                     className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   />
 
@@ -407,11 +360,16 @@ const SignUp: React.FC = () => {
                 <input
                   type="submit"
                   value="Create account"
+                  disabled={isLoading}
                   className="w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 text-white transition hover:bg-opacity-90"
                 />
               </div>
 
-              <button className="flex w-full items-center justify-center gap-3.5 rounded-lg border border-stroke bg-gray p-4 hover:bg-opacity-50 dark:border-strokedark dark:bg-meta-4 dark:hover:bg-opacity-50">
+              <button
+                type="button"
+                className="flex w-full items-center justify-center gap-3.5 rounded-lg border border-stroke bg-gray p-4 hover:bg-opacity-50 dark:border-strokedark dark:bg-meta-4 dark:hover:bg-opacity-50"
+                disabled={isLoading}
+              >
                 <span>
                   <svg
                     width="20"
