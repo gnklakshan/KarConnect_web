@@ -33,9 +33,47 @@ const SignUp: React.FC = () => {
   const [packageh, setPackage] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleAdd = async (el: React.FormEvent<HTMLFormElement>) => {
+  // const handleAdd = async (el: React.FormEvent<HTMLFormElement>) => {
+  //   el.preventDefault();
+  //   setIsLoading(true);
+  //   const auth = getAuth();
+  //   const userData = {
+  //     firstname,
+  //     lastname,
+  //     username,
+  //     packageh,
+  //     email,
+  //     is_owner: 1,
+  //   };
+
+  //   try {
+  //     // Create user with email and password
+  //     const userCredential = await createUserWithEmailAndPassword(
+  //       auth,
+  //       email,
+  //       password,
+  //     );
+
+  //     // Signed up
+  //     const user = userCredential.user;
+  //     const userID = user.uid; // Get the user ID
+
+  //     // Add user data to Firestore
+  //     const res = await setDoc(doc(db, "owners", userID), userData);
+
+  //     // console.log("User added with ID: ", res.id); // Log the new document ID
+  //     // Optionally, redirect or dispatch user login state
+  //     // redirect("/main");
+  //     route.push("/payment_gateway/payment_gateway");
+  //   } catch (error) {
+  //     console.error("Error creating user: ", error);
+  //     setError(true); // Handle error state
+  //     // You can also set specific error messages if needed
+  //   }
+  // };
+  const handleAdd = (el: React.FormEvent<HTMLFormElement>) => {
     el.preventDefault();
-    setIsLoading(true);
+    setIsLoading(true); // Start loading
     const auth = getAuth();
     const userData = {
       firstname,
@@ -46,30 +84,30 @@ const SignUp: React.FC = () => {
       is_owner: 1,
     };
 
-    try {
-      // Create user with email and password
-      const userCredential = await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password,
-      );
+    // Create user with email and password
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        const user = userCredential.user;
+        const userID = user.uid; // Get the user ID
 
-      // Signed up
-      const user = userCredential.user;
-      const userID = user.uid; // Get the user ID
+        route.push("/payment_gateway/payment_gateway");
 
-      // Add user data to Firestore
-      const res = await setDoc(doc(db, "owners", userID), userData);
+        // Add user data to Firestore
+        return setDoc(doc(db, "owners", userID), userData);
+      })
+      .then(() => {
+        // Navigate to payment gateway after successfully setting user data
 
-      // console.log("User added with ID: ", res.id); // Log the new document ID
-      // Optionally, redirect or dispatch user login state
-      // redirect("/main");
-      route.push("/payment_gateway/payment_gateway");
-    } catch (error) {
-      console.error("Error creating user: ", error);
-      setError(true); // Handle error state
-      // You can also set specific error messages if needed
-    }
+        console.log("Navigation should be triggered");
+
+        // Stop loading
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        console.error("Error creating user: ", error);
+        setError(true); // Set error state
+        setIsLoading(false); // Stop loading on error
+      });
   };
 
   return (
