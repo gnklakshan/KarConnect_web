@@ -1,16 +1,13 @@
 "use client";
 import dynamic from "next/dynamic";
-import ChartOne from "../Charts/ChartOne";
-import ChartTwo from "../Charts/ChartTwo";
-import ChatCard from "../Chat/ChatCard";
-import TableOne from "../Tables/TableOne";
-import CardDataStats from "../CardDataStats";
+// import CardDataStats from "../CardDataStats";
 import Link from "next/link";
 import ActionAreaCard from "../Actioncards/ActionAreaCard";
 import { Typography } from "@mui/material";
-import React, { useState, useEffect } from "react";
+// import React, { useState, useEffect } from "react";
 import "../../firebaseConfig";
-import { getFirestore, addDoc, collection, getDocs } from "firebase/firestore";
+// import { getFirestore, addDoc, collection, getDocs } from "firebase/firestore";
+import Dashboard from "../banner/banner";
 
 const MapOne = dynamic(() => import("@/components/Maps/MapOne"), {
   ssr: false,
@@ -21,35 +18,35 @@ const ChartThree = dynamic(() => import("@/components/Charts/ChartThree"), {
 });
 
 const ECommerce: React.FC = () => {
-  const [userCount, setUserCount] = useState<number | null>(null);
-  const [vehicleCount, setVehicleCount] = useState<number | null>(null);
-  useEffect(() => {
-    const fetchUserCount = async () => {
-      try {
-        const db = getFirestore();
-        const usersCollection = collection(db, "users");
-        const userSnapshot = await getDocs(usersCollection);
-        setUserCount(userSnapshot.size); // Set the number of users
-      } catch (error) {
-        console.error("Error fetching user count:", error);
-      }
-    };
+  // const [userCount, setUserCount] = useState<number | null>(null);
+  // const [vehicleCount, setVehicleCount] = useState<number | null>(null);
+  // useEffect(() => {
+  //   const fetchUserCount = async () => {
+  //     try {
+  //       const db = getFirestore();
+  //       const usersCollection = collection(db, "users");
+  //       const userSnapshot = await getDocs(usersCollection);
+  //       setUserCount(userSnapshot.size); // Set the number of users
+  //     } catch (error) {
+  //       console.error("Error fetching user count:", error);
+  //     }
+  //   };
 
-    fetchUserCount();
-  }, []);
-  useEffect(() => {
-    const fetchVehicleCount = async () => {
-      try {
-        const db = getFirestore();
-        const vehicleCollection = collection(db, "vehicle_db");
-        const vehicleSnapshot = await getDocs(vehicleCollection);
-        setVehicleCount(vehicleSnapshot.size);
-      } catch (error) {
-        console.error("Error fetching vehicle count:", error);
-      }
-    };
-    fetchVehicleCount();
-  }, []);
+  //   fetchUserCount();
+  // }, []);
+  // useEffect(() => {
+  //   const fetchVehicleCount = async () => {
+  //     try {
+  //       const db = getFirestore();
+  //       const vehicleCollection = collection(db, "vehicle_db");
+  //       const vehicleSnapshot = await getDocs(vehicleCollection);
+  //       setVehicleCount(vehicleSnapshot.size);
+  //     } catch (error) {
+  //       console.error("Error fetching vehicle count:", error);
+  //     }
+  //   };
+  //   fetchVehicleCount();
+  // }, []);
   return (
     <>
       <div className="mb-1.5 flex flex-wrap items-end justify-end gap-2 py-4 xl:gap-6">
@@ -66,8 +63,9 @@ const ECommerce: React.FC = () => {
           View Request
         </Link>
       </div>
+      <Dashboard />
 
-      <div className="grid grid-cols-1 justify-end gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-4 2xl:gap-7.5">
+      {/* <div className="grid grid-cols-1 gap-4 justify-self-center md:grid-cols-2 md:gap-6 xl:grid-cols-4 2xl:gap-7.5">
         {" "}
         <CardDataStats
           title="Total Vehicles"
@@ -165,55 +163,7 @@ const ECommerce: React.FC = () => {
             />
           </svg>
         </CardDataStats>
-        {/* <CardDataStats
-          title="Average Ratings"
-          total="4.8⭐"
-          rate="4.35%"
-          levelUp
-        >
-          <svg
-            width="512"
-            height="512"
-            viewBox="0 0 512 512"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <rect
-              width="512"
-              height="512"
-              x="0"
-              y="0"
-              rx="30"
-              fill="transparent"
-              stroke="transparent"
-              stroke-width="0"
-              stroke-opacity="100%"
-              paint-order="stroke"
-            ></rect>
-            <svg
-              width="256px"
-              height="256px"
-              viewBox="0 0 14 14"
-              fill="fill-primary"
-              x="128"
-              y="128"
-              role="img"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <g fill="fill-primary">
-                <g
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <path d="M6 1.05a1.18 1.18 0 0 1 2 0l1.94 3.07l2.53.31a1.16 1.16 0 0 1 .75 1.91l-2.11 2.42l.68 3.35a1.17 1.17 0 0 1-.46 1.17a1.19 1.19 0 0 1-1.26.07L7 11.67l-3.07 1.68a1.19 1.19 0 0 1-1.26-.07a1.17 1.17 0 0 1-.46-1.17l.68-3.35L.78 6.34a1.16 1.16 0 0 1 .75-1.91l2.53-.31Z" />
-                  <path d="M5.5 5.52h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-2m3-2h-3" />
-                </g>
-              </g>
-            </svg>
-          </svg>
-        </CardDataStats> */}
-      </div>
+      </div> */}
       <div style={{ display: "flex", gap: "16px", paddingTop: "20px" }}>
         <ActionAreaCard
           title="Add Vehicle"
@@ -258,12 +208,7 @@ const ECommerce: React.FC = () => {
       </div>
 
       <div className="mt-4 grid grid-cols-12 gap-4 md:mt-6 md:gap-6 2xl:mt-7.5 2xl:gap-7.5">
-        {/* <ChartOne /> */}
-        {/* <ChartTwo />
-        <ChartThree />
-        <MapOne /> */}
         <div className="col-span-12 xl:col-span-8">{/* <TableOne /> */}</div>
-        {/* <ChatCard /> */}
       </div>
     </>
   );
