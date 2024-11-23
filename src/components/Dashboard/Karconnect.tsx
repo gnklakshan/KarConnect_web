@@ -6,6 +6,8 @@ import ChatCard from "../Chat/ChatCard";
 import TableOne from "../Tables/TableOne";
 import CardDataStats from "../CardDataStats";
 import Link from "next/link";
+import ActionAreaCard from "../Actioncards/ActionAreaCard";
+import { Typography } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import "../../firebaseConfig";
 import { getFirestore, addDoc, collection, getDocs } from "firebase/firestore";
@@ -65,7 +67,8 @@ const ECommerce: React.FC = () => {
         </Link>
       </div>
 
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-4 2xl:gap-7.5">
+      <div className="grid grid-cols-1 justify-end gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-4 2xl:gap-7.5">
+        {" "}
         <CardDataStats
           title="Total Vehicles"
           total={`${vehicleCount ?? "Loading..."}`}
@@ -110,7 +113,6 @@ const ECommerce: React.FC = () => {
             </svg>
           </svg>
         </CardDataStats>
-
         <CardDataStats
           title="Total Income"
           total="Rs 2450"
@@ -163,7 +165,7 @@ const ECommerce: React.FC = () => {
             />
           </svg>
         </CardDataStats>
-        <CardDataStats
+        {/* <CardDataStats
           title="Average Ratings"
           total="4.8⭐"
           rate="4.35%"
@@ -210,17 +212,57 @@ const ECommerce: React.FC = () => {
               </g>
             </svg>
           </svg>
-        </CardDataStats>
+        </CardDataStats> */}
+      </div>
+      <div style={{ display: "flex", gap: "16px", paddingTop: "20px" }}>
+        <ActionAreaCard
+          title="Add Vehicle"
+          head1="0.95%"
+          head2="Your Rental Journey is one click away."
+          head3="Rent your Vehicle"
+          image="./images/product/car-5.jpg"
+          levelUp={true}
+          link={"/manage/add-vehicle"}
+        >
+          <Typography variant="body2">
+            {/* Additional information can go here. */}
+          </Typography>
+        </ActionAreaCard>
+
+        <ActionAreaCard
+          title="View Requests"
+          head1="0.95%"
+          head2="View the rental requests made by users."
+          head3="Rent your Vehicle"
+          image="./images/product/car-6.jpg"
+          levelUp={true}
+          link={"/manage/booking"}
+        >
+          <Typography variant="body2">
+            {/* Additional information can go here. */}
+          </Typography>
+        </ActionAreaCard>
+        <ActionAreaCard
+          title="View My Vehicles"
+          head1="0.95%"
+          head2="Manage your vehicles."
+          head3="Rent your Vehicle"
+          image="./images/product/car-7.jpg"
+          levelUp={true}
+          link={"/manage/add-vehicle"}
+        >
+          <Typography variant="body2">
+            {/* Additional information can go here. */}
+          </Typography>
+        </ActionAreaCard>
       </div>
 
       <div className="mt-4 grid grid-cols-12 gap-4 md:mt-6 md:gap-6 2xl:mt-7.5 2xl:gap-7.5">
-        <ChartOne />
-        <ChartTwo />
+        {/* <ChartOne /> */}
+        {/* <ChartTwo />
         <ChartThree />
-        <MapOne />
-        <div className="col-span-12 xl:col-span-8">
-          <TableOne />
-        </div>
+        <MapOne /> */}
+        <div className="col-span-12 xl:col-span-8">{/* <TableOne /> */}</div>
         {/* <ChatCard /> */}
       </div>
     </>
