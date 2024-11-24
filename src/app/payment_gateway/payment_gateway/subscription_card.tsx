@@ -52,7 +52,7 @@ const PricingCard: React.FC<PricingCardProps> = ({
       <div className="space-y-2">
         <h3 className="text-xl font-semibold">{title}</h3>
         <div className="flex items-baseline">
-          <span className="text-3xl font-bold">${price}</span>
+          <span className="text-3xl font-bold">Rs.{price}</span>
           <span className="text-gray-500 ml-1">/mo</span>
         </div>
       </div>
@@ -88,7 +88,7 @@ const PricingCards = () => {
   const plans: PricingPlan[] = [
     {
       title: "Starter",
-      price: 29,
+      price: 5000,
       features: [
         "Individual configuration",
         "No setup, or hidden fees",
@@ -99,7 +99,7 @@ const PricingCards = () => {
     },
     {
       title: "Company",
-      price: 99,
+      price: 12500,
       features: [
         "Individual configuration",
         "No setup, or hidden fees",
@@ -111,7 +111,7 @@ const PricingCards = () => {
     },
     {
       title: "Enterprise",
-      price: 499,
+      price: 22500,
       features: [
         "Individual configuration",
         "No setup, or hidden fees",
