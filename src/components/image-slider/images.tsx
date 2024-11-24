@@ -1,8 +1,8 @@
 "use client";
 import { motion } from "framer-motion";
 import React from "react";
-import { ImagesSlider } from "./images-slider"; 
-import Image from "next/image"; 
+import { ImagesSlider } from "./images-slider";
+import Image from "next/image";
 import { FlipWords } from "./images-slider";
 
 export function ImagesSliderDemo() {
@@ -19,35 +19,39 @@ export function ImagesSliderDemo() {
         initial={{ opacity: 0, y: -80 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
-        className="z-50 flex flex-col justify-start items-start px-4 sm:px-8 lg:px-16 w-full"
+        className="z-50 flex w-full flex-col items-start justify-start px-4 sm:px-8 lg:px-16"
       >
         <div className="ml-15">
-          <div className="ml-10 sm:ml-0 flex-col">
-            <div className="h-[10rem] flex justify-start items-start">
-              <div className="text-3xl sm:text-5xl font-normal text-white">
+          <div className="ml-10 flex-col sm:ml-0">
+            <div className="flex h-[10rem] items-start justify-start">
+              <div className="text-3xl font-normal text-white sm:text-5xl">
                 Rent
-                <FlipWords className="text-3xl sm:text-5xl font-normal text-white" words={words} />
+                <FlipWords
+                  className="text-3xl font-normal text-white sm:text-5xl"
+                  words={words}
+                />
                 <br />
-                <span className="inline">space with</span> <span className="text-5xl text-white inline">KarConnect</span>
+                <span className="inline">space with</span>{" "}
+                <span className="inline text-5xl text-white">KarConnect</span>
               </div>
             </div>
-            <button className="px-6 py-4 backdrop-blur-sm border bg-blue-300/10 border-blue-500/20 text-white rounded-full relative mt-4">
+            <button className="relative mt-4 rounded-full border border-blue-500/20 bg-blue-300/10 px-6 py-4 text-white backdrop-blur-sm">
               <span>Join now →</span>
-              <div className="absolute inset-x-0 h-px -bottom-px bg-gradient-to-r w-3/4 mx-auto from-transparent via-blue-500 to-transparent" />
+              <div className="absolute inset-x-0 -bottom-px mx-auto h-px w-3/4 bg-gradient-to-r from-transparent via-blue-500 to-transparent" />
             </button>
           </div>
         </div>
       </motion.div>
 
       {/* Render images directly using Image component */}
-      <div className="relative w-full h-full">
+      <div className="relative h-full w-full">
         {images.map((src, index) => (
-          <Image 
-            key={index} 
-            src={src} 
-            alt={`Carousel image ${index + 1}`} 
-            layout="fill" 
-            objectFit="cover" 
+          <Image
+            key={index}
+            src={src}
+            alt={`Carousel image ${index + 1}`}
+            layout="fill"
+            objectFit="cover"
             className="absolute inset-0"
           />
         ))}
@@ -57,6 +61,5 @@ export function ImagesSliderDemo() {
 }
 
 export function FlipWordsDemo() {
-
   return <div></div>;
 }
