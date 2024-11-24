@@ -5,15 +5,15 @@ import React from "react";
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 
 export const metadata: Metadata = {
-  title: "Massage | KarConnect",
+  title: "Message | KarConnect",
   description:
-    "Massage ",
+    "Message ",
 };
 
 const massageViwer: React.FC = () => {
   return (
     <DefaultLayout>
-      <Breadcrumb pageName="Massage" />
+      <Breadcrumb pageName="Message" />
       <ChatCard />
     </DefaultLayout>
   );

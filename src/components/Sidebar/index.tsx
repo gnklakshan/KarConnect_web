@@ -252,7 +252,7 @@ const menuGroups = [
       },
     ],
   },
-  {
+  /*{
     name: "Temp-need to remove",
     menuItems: [
       {
@@ -487,7 +487,7 @@ const menuGroups = [
       //   ],
       // },
     ],
-  },
+  },*/
 ];
 
 const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {

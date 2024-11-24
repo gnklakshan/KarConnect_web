@@ -73,7 +73,7 @@ const DropdownMessage = () => {
                     <Image
                       width={112}
                       height={112}
-                      src={"/images/user/user-02.png"}
+                      src={"/images/user/user.png"}
                       alt="User"
                       style={{
                         width: "auto",
@@ -100,7 +100,7 @@ const DropdownMessage = () => {
                     <Image
                       width={112}
                       height={112}
-                      src={"/images/user/user-01.png"}
+                      src={"/images/user/user.png"}
                       alt="User"
                       style={{
                         width: "auto",
@@ -127,7 +127,7 @@ const DropdownMessage = () => {
                     <Image
                       width={112}
                       height={112}
-                      src={"/images/user/user-03.png"}
+                      src={"/images/user/user.png"}
                       alt="User"
                       style={{
                         width: "auto",
@@ -154,7 +154,7 @@ const DropdownMessage = () => {
                     <Image
                       width={112}
                       height={112}
-                      src={"/images/user/user-04.png"}
+                      src={"/images/user/user.png"}
                       alt="User"
                       style={{
                         width: "auto",
@@ -181,7 +181,7 @@ const DropdownMessage = () => {
                     <Image
                       width={112}
                       height={112}
-                      src={"/images/user/user-02.png"}
+                      src={"/images/user/user.png"}
                       alt="User"
                       style={{
                         width: "auto",
