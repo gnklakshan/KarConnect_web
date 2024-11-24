@@ -545,6 +545,7 @@ const BookingPage: React.FC = () => {
         const userDoc = await getDoc(doc(db, "users", userId));
         if (userDoc.exists()) {
           const userData = userDoc.data() as UserData;
+          // const userEmail = userData.email;
           setUsers((prevUsers) => ({
             ...prevUsers,
             [userId]: userData,
@@ -609,7 +610,7 @@ const BookingPage: React.FC = () => {
     ) => {
       try {
         const db = getFirestore();
-    
+
         // Fetch vehicle data
         const vehicleDoc = await getDoc(doc(db, "vehicle_db", vehicleId));
         if (!vehicleDoc.exists()) {
@@ -617,54 +618,52 @@ const BookingPage: React.FC = () => {
           return;
         }
         const vehicleData = vehicleDoc.data() as VehicleData;
-    
+
         // Fetch rental data
         const rentRef = collection(db, "users", rentUser, "rent_vehicles");
         const rentQuerySnapshot = await getDocs(rentRef);
         const rentalDocs = rentQuerySnapshot.docs
           .map((doc) => doc.data() as RentData)
-          .filter((rent) => rent.VehicleID === vehicleId && rent.confirm==1); // Only confirmed rentals for this vehicle
-    
+          .filter((rent) => rent.VehicleID === vehicleId && rent.confirm == 1); // Only confirmed rentals for this vehicle
+
         // Initialize earnings for the month
         let totalEarnings = 0;
-    
+
         // Loop through each confirmed rental to calculate earnings
         for (const rental of rentalDocs) {
           // Parse dates from strings
           const startDate = new Date(rental.StartDate);
           const endDate = new Date(rental.EndDate);
-    
+
           // Validate dates
           if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
             console.error("Invalid dates:", rental.StartDate, rental.EndDate);
             continue;
           }
-    
+
           // Calculate rental duration in days
           const diffInDays = Math.ceil(
-            (endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24)
+            (endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24),
           );
-    
+
           // Convert price to number
           const pricePerDay = Number(vehicleData.price);
           if (isNaN(pricePerDay)) {
             console.error("Invalid price:", vehicleData.price);
             continue;
           }
-    
+
           // Calculate earnings for this rental and add to total
           const earnings = pricePerDay * diffInDays;
           totalEarnings += earnings;
         }
-    
+
         // Update the state with the calculated monthly earnings
         setMonthlyEarnings((prevEarnings) => prevEarnings + totalEarnings);
       } catch (error) {
         console.error(`Error calculating monthly earnings:`, error);
       }
     };
-    
-    
 
     const applyFilters = (bookingsData: BookingData[]) => {
       const filteredBookings = bookingsData.filter((booking) => {
@@ -746,6 +745,49 @@ const BookingPage: React.FC = () => {
 
         setConfirmedCount((prevCount) => prevCount + 1);
         setPendingCount((prevCount) => prevCount - 1);
+
+        const userEmail = users[RentUser]?.email;
+        const userName = `${users[RentUser]?.first_name} ${users[RentUser]?.last_name}`;
+        console.log("1");
+
+        if (userEmail) {
+          await fetch("/api/sendEmail", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              to: userEmail,
+              subject: "Booking Confirmation",
+              html: `
+              <div style="font-family: Arial, sans-serif; color: #333; padding: 20px; background-color: #f9f9f9; border-radius: 10px; max-width: 600px; margin: auto; border: 1px solid #ddd;">
+                <h2 style="color: #28a745; text-align: center;">Booking Confirmation</h2>
+                <p>Hello ${userName},</p>
+                <p>Your booking for <strong>Vehicle ID: ${bookingId}</strong> is confirmed!</p>
+                <p>Thank you for choosing our service.</p>
+                
+                <div style="text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid #eeeeee; color: #666666;">
+                  <strong>KarConnect</strong>
+                  <p>Your Trusted Vehicle Rental Partner</p>
+                  <p>123 Main Street, Nugegoda, Colombo</p>
+                  <p>Phone: +94 112 45 2569</p>
+                  <div style="margin: 15px 0;">
+                    <a href="#" style="margin: 0 10px; color: #2196F3; text-decoration: none;">Facebook</a> |
+                    <a href="#" style="margin: 0 10px; color: #2196F3; text-decoration: none;">Twitter</a> |
+                    <a href="#" style="margin: 0 10px; color: #2196F3; text-decoration: none;">Instagram</a>
+                  </div>
+                  <p style="font-size: 12px; color: #999999;">© ${new Date().getFullYear()} KarConnect. All rights reserved.</p>
+                </div>
+              </div>
+            `,
+            }),
+          });
+          console.log("Email sent to:", userEmail);
+        } else {
+          console.error(
+            `No email found for user ${RentUser} and Email not sent`,
+          );
+        }
       } catch (error) {
         console.error("Error confirming booking: ", error);
       }
@@ -788,6 +830,47 @@ const BookingPage: React.FC = () => {
 
         setCanceledCount((prevCount) => prevCount + 1);
         setPendingCount((prevCount) => prevCount - 1);
+
+        const userEmail = users[RentUser]?.email;
+        const userName = `${users[RentUser]?.first_name} ${users[RentUser]?.last_name}`;
+        console.log("1");
+
+        if (userEmail) {
+          await fetch("/api/sendEmail", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              to: userEmail,
+              subject: "Booking Notification: Request Rejected by the Owner",
+              html: `
+              <div style="font-family: Arial, sans-serif; color: #333; padding: 20px; background-color: #f9f9f9; border-radius: 10px; max-width: 600px; margin: auto; border: 1px solid #ddd;">
+                <h2 style="color: #d9534f; text-align: center;">Booking Rejection Notification</h2>
+                <p>Hello ${userName},</p>
+                <p>We regret to inform you that your booking for <strong>Vehicle ID: ${bookingId}</strong> has been <strong style="color: #d9534f;">rejected</strong> by the owner.</p>
+                <p style="margin-top: 20px;">If you have any questions or need assistance, please feel free to reach out to our support team.</p>
+                
+                <div style="text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid #eeeeee; color: #666666;">
+                  <strong>KarConnect</strong>
+                  <p>Your Trusted Vehicle Rental Partner</p>
+                  <p>123 Main Street, Nugegoda, Colombo</p>
+                  <p>Phone: +94 112 45 2569</p>
+                  <div style="margin: 15px 0;">
+                    <a href="#" style="margin: 0 10px; color: #2196F3; text-decoration: none;">Facebook</a> |
+                    <a href="#" style="margin: 0 10px; color: #2196F3; text-decoration: none;">Twitter</a> |
+                    <a href="#" style="margin: 0 10px; color: #2196F3; text-decoration: none;">Instagram</a>
+                  </div>
+                  <p style="font-size: 12px; color: #999999;">© ${new Date().getFullYear()} KarConnect. All rights reserved.</p>
+                </div>
+              </div>
+            `,
+            }),
+          });
+          console.log("Email sent to:", userEmail);
+        } else {
+          console.error(`No email found for user ${RentUser}`);
+        }
       } catch (error) {
         console.error("Error canceling booking: ", error);
       }
@@ -830,12 +913,12 @@ const BookingPage: React.FC = () => {
           </section>
 
           <section className="mb-8 rounded-lg bg-white p-6 shadow dark:bg-boxdark">
-            <div className="flex items-center justify-between mb-4">
+            <div className="mb-4 flex items-center justify-between">
               <h2 className="text-primary-color text-2xl font-bold">
                 Booking Requests
               </h2>
               <Link href="/manage/confiremed-rent">
-                <button className="px-4 py-2 bg-blue-600 text-white font-bold rounded hover:bg-blue-700 transition">
+                <button className="rounded bg-blue-600 px-4 py-2 font-bold text-white transition hover:bg-blue-700">
                   View Confirmed Rents
                 </button>
               </Link>
@@ -881,67 +964,72 @@ const BookingPage: React.FC = () => {
             </div>
 
             <div>
-  {bookingData
-    .filter((booking) => booking.pending === 1)
-    .map((booking) => {
-      const user = users[booking.RentUser];
-      const rent = rentalData[booking.id];
-      const vehicle = vehicledData[booking.VehicleID];
+              {bookingData
+                .filter((booking) => booking.pending === 1)
+                .map((booking) => {
+                  const user = users[booking.RentUser];
+                  const rent = rentalData[booking.id];
+                  const vehicle = vehicledData[booking.VehicleID];
 
-      return (
-        <div
-          key={booking.id}
-          className="flex flex-wrap items-center justify-between border-b py-4"
-        >
-          <div>
-            <h3 className="font-bold">
-              {user?.first_name + " " + user?.last_name || booking.RentUser}
-            </h3>
-            {vehicle ? (
-              <p>{vehicle.brand + " " + vehicle.name}</p>
-            ) : (
-              <p>Vehicle details not available</p>
-            )}
-            {rent && (
-              <>
-                <p>
-                  From {rent.StartDate} To {rent.EndDate}
-                </p>
-              </>
-            )}
-            <span
-              className={`inline-block rounded-full px-2 py-1 text-sm font-bold text-rose-400 status-pending`}
-            >
-              Pending
-            </span>
-          </div>
-          <div className="mt-4 flex flex-wrap justify-end gap-2 md:mt-0">
-            <Link href="#">
-              <button
-                className="bg-success-color rounded bg-green-500 px-4 py-2 text-white"
-                onClick={() => handleConfirm(booking.id, booking.RentUser)}
-              >
-                Confirm
-              </button>
-            </Link>
-            <Link href="#">
-              <button
-                className="bg-danger-color rounded bg-red px-4 py-2 text-white"
-                onClick={() => handleCancel(booking.id, booking.RentUser)}
-              >
-                Cancel
-              </button>
-            </Link>
-            <Link href="#">
-              <button className="bg-primary-color rounded bg-orange-300 px-4 py-2 text-white">
-                Message
-              </button>
-            </Link>
-          </div>
-        </div>
-      );
-    })}
-</div>
+                  return (
+                    <div
+                      key={booking.id}
+                      className="flex flex-wrap items-center justify-between border-b py-4"
+                    >
+                      <div>
+                        <h3 className="font-bold">
+                          {user?.first_name + " " + user?.last_name ||
+                            booking.RentUser}
+                        </h3>
+                        {vehicle ? (
+                          <p>{vehicle.brand + " " + vehicle.name}</p>
+                        ) : (
+                          <p>Vehicle details not available</p>
+                        )}
+                        {rent && (
+                          <>
+                            <p>
+                              From {rent.StartDate} To {rent.EndDate}
+                            </p>
+                          </>
+                        )}
+                        <span
+                          className={`status-pending inline-block rounded-full px-2 py-1 text-sm font-bold text-rose-400`}
+                        >
+                          Pending
+                        </span>
+                      </div>
+                      <div className="mt-4 flex flex-wrap justify-end gap-2 md:mt-0">
+                        <Link href="#">
+                          <button
+                            className="bg-success-color rounded bg-green-500 px-4 py-2 text-white"
+                            onClick={() =>
+                              handleConfirm(booking.id, booking.RentUser)
+                            }
+                          >
+                            Confirm
+                          </button>
+                        </Link>
+                        <Link href="#">
+                          <button
+                            className="bg-danger-color rounded bg-red px-4 py-2 text-white"
+                            onClick={() =>
+                              handleCancel(booking.id, booking.RentUser)
+                            }
+                          >
+                            Cancel
+                          </button>
+                        </Link>
+                        <Link href="#">
+                          <button className="bg-primary-color rounded bg-orange-300 px-4 py-2 text-white">
+                            Message
+                          </button>
+                        </Link>
+                      </div>
+                    </div>
+                  );
+                })}
+            </div>
           </section>
         </main>
       </div>
