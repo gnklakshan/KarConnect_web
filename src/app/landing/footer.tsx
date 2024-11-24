@@ -24,8 +24,8 @@ const Footer = () => {
                 We are Nitro Runners, a passionate team of three developers in
                 our third year of studies. Our collaborative approach and
                 diverse skill set enable us to create innovative solutions that
-                exceed expectations. We're committed to staying at the forefront
-                of technology while delivering exceptional results.
+                exceed expectations. We&apos;re committed to staying at the
+                forefront of technology while delivering exceptional results.
               </p>
             </div>
 
