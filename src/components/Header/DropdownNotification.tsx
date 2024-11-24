@@ -60,8 +60,8 @@ const DropdownNotification = () => {
                     <span className="text-black dark:text-white">
                     Account Reminder
                     </span>{" "}
-                    Your subscription is about to expire in 3 days! Renew now to continue enjoying our services without interruption.
-                  </p>
+                    Your subscription is about to expire in 3 days! Renew now to continue enjoying our services without interruption&excl;
+                    </p>
 
                   <p className="text-xs">12 May, 2024</p>
                 </Link>
@@ -75,7 +75,7 @@ const DropdownNotification = () => {
                     <span className="text-black dark:text-white">
                     Security Alert
                     </span>{" "}
-                     A new device just logged into your account from . If this wasn't you, please change your password immediately.                  </p>
+                     A new device just logged into your account from . If this was not you, please change your password immediately.                  </p>
                   <p className="text-xs">24 Feb, 2024</p>
                 </Link>
               </li>
@@ -88,7 +88,7 @@ const DropdownNotification = () => {
                     <span className="text-black dark:text-white">
                     App Update Notification
                     </span>{" "}
-                    New App Update Available! Version [X.X] is now live with improved performance and bug fixes. Update now!
+                    New App Update Available&excl; Version 2.2 is now live with improved performance and bug fixes. Update now&excl;
                   </p>
 
                   <p className="text-xs">04 Jan, 2024</p>
@@ -103,7 +103,7 @@ const DropdownNotification = () => {
                     <span className="text-black dark:text-white">
                     Welcome Notification:
                     </span>{" "}
-                    Welcome to KarConnect! We’re excited to have you with us. Let’s get started!
+                    Welcome to KarConnect&excl; We are excited to have you with us. Let us get started&excl;
                   </p>
 
                   <p className="text-xs">01 jan, 2024</p>
