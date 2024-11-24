@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import nodemailer from 'nodemailer';
 
 export async function POST(req: Request) {
-  const { to, subject, text } = await req.json();
+  const { to, subject, html } = await req.json();
 
   const transporter = nodemailer.createTransport({
     service: 'gmail',
@@ -17,7 +17,7 @@ export async function POST(req: Request) {
       from: process.env.SMTP_EMAIL,
       to,
       subject,
-      text,
+      html,
     });
 
     return NextResponse.json({ message: 'Email sent successfully!' }, { status: 200 });
