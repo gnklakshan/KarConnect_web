@@ -33,10 +33,11 @@ interface UserData {
   phone_number: string;
 }
 
-
 const ConfirmedVehicles: React.FC = () => {
   const [confirmedBookings, setConfirmedBookings] = useState<BookingData[]>([]);
-  const [vehicleData, setVehicleData] = useState<{ [key: string]: VehicleData }>({});
+  const [vehicleData, setVehicleData] = useState<{
+    [key: string]: VehicleData;
+  }>({});
   const [users, setUsers] = useState<{ [key: string]: UserData }>({});
 
   useEffect(() => {
@@ -49,11 +50,13 @@ const ConfirmedVehicles: React.FC = () => {
           ...doc.data(),
         })) as BookingData[];
 
-        const confirmedBookings = bookingsData.filter(booking => booking.confirm === 1);
+        const confirmedBookings = bookingsData.filter(
+          (booking) => booking.confirm === 1,
+        );
 
         setConfirmedBookings(confirmedBookings);
 
-        confirmedBookings.forEach(booking => {
+        confirmedBookings.forEach((booking) => {
           fetchVehicleData(booking.VehicleID);
           fetchUserData(booking.RentUser);
         });
@@ -68,13 +71,16 @@ const ConfirmedVehicles: React.FC = () => {
         const vehicleDoc = await getDoc(doc(db, "vehicle_db", vehicleId));
         if (vehicleDoc.exists()) {
           const vehicleData = vehicleDoc.data() as VehicleData;
-          setVehicleData(prevData => ({
+          setVehicleData((prevData) => ({
             ...prevData,
             [vehicleId]: vehicleData,
           }));
         }
       } catch (error) {
-        console.error(`Error fetching vehicle data for vehicleId ${vehicleId}:`, error);
+        console.error(
+          `Error fetching vehicle data for vehicleId ${vehicleId}:`,
+          error,
+        );
       }
     };
 
@@ -84,7 +90,7 @@ const ConfirmedVehicles: React.FC = () => {
         const userDoc = await getDoc(doc(db, "users", userId));
         if (userDoc.exists()) {
           const user = userDoc.data() as UserData;
-          setUsers(prevData => ({
+          setUsers((prevData) => ({
             ...prevData,
             [userId]: user,
           }));
@@ -93,9 +99,8 @@ const ConfirmedVehicles: React.FC = () => {
         console.error(`Error fetching user data for userId ${userId}:`, error);
       }
     };
-    
 
-    fetchConfirmedBookings();
+    fetchConfirmedBookings(); //fetch booking details
   }, []);
 
   return (
@@ -104,24 +109,29 @@ const ConfirmedVehicles: React.FC = () => {
         <Breadcrumb pageName="Confirmed Vehicles" />
         <main className="mt-10">
           <section className="mb-8 rounded-lg bg-white p-6 shadow dark:border-strokedark dark:bg-boxdark">
-            <h2 className="mb-4 text-2xl font-bold text-meta-5">Confirmed Vehicles</h2>
+            <h2 className="mb-4 text-2xl font-bold text-meta-5">
+              Confirmed Vehicles
+            </h2>
             <ul>
-              {confirmedBookings.map(booking => {
+              {confirmedBookings.map((booking) => {
                 const user = users[booking.RentUser];
-  
-                  return (
-                    <li key={booking.id} className="mb-4">
-                      <h3 className="text-lg font-bold">{user?.first_name + " " + user?.last_name || booking.RentUser}</h3>
-                      <p>Phone Number: {user?.phone_number}</p>
-                      <p>Vehicle: {vehicleData[booking.VehicleID]?.name}</p>
-                      <p>Brand: {vehicleData[booking.VehicleID]?.brand}</p>
-                      <p>Price: ${vehicleData[booking.VehicleID]?.price} per day</p>
-                      <p>Rental ID: {booking.id}</p>
-                      
-                    </li>
-                  );
-                })}
 
+                return (
+                  <li key={booking.id} className="mb-4">
+                    <h3 className="text-lg font-bold">
+                      {user?.first_name + " " + user?.last_name ||
+                        booking.RentUser}
+                    </h3>
+                    <p>Phone Number: {user?.phone_number}</p>
+                    <p>Vehicle: {vehicleData[booking.VehicleID]?.name}</p>
+                    <p>Brand: {vehicleData[booking.VehicleID]?.brand}</p>
+                    <p>
+                      Price: ${vehicleData[booking.VehicleID]?.price} per day
+                    </p>
+                    <p>Rental ID: {booking.id}</p>
+                  </li>
+                );
+              })}
             </ul>
           </section>
         </main>
