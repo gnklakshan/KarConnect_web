@@ -199,7 +199,7 @@ const ECommerce: React.FC = () => {
           head3="Rent your Vehicle"
           image="./images/product/car-7.jpg"
           levelUp={true}
-          link={"/manage/add-vehicle"}
+          link={"/vehicle"}
         >
           <Typography variant="body2">
             {/* Additional information can go here. */}
