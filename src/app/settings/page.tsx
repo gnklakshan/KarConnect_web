@@ -4,9 +4,9 @@ import { Metadata } from "next";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 
 export const metadata: Metadata = {
-  title: "Next.js Settings | TailAdmin - Next.js Dashboard Template",
+  title: "Settings | KarConnect",
   description:
-    "This is Next.js Settings page for TailAdmin - Next.js Tailwind CSS Admin Dashboard Template",
+    "This is Settings page for KarConnect",
 };
 
 const Settings = () => {
@@ -64,8 +64,8 @@ const Settings = () => {
                           type="text"
                           name="fullName"
                           id="fullName"
-                          placeholder="Devid Jhon"
-                          defaultValue="Devid Jhon"
+                          placeholder="full name"
+                          defaultValue="full name"
                         />
                       </div>
                     </div>
@@ -82,8 +82,8 @@ const Settings = () => {
                         type="text"
                         name="phoneNumber"
                         id="phoneNumber"
-                        placeholder="+990 3343 7865"
-                        defaultValue="+990 3343 7865"
+                        placeholder="phone number"
+                        defaultValue="phone number"
                       />
                     </div>
                   </div>
@@ -126,8 +126,8 @@ const Settings = () => {
                         type="email"
                         name="emailAddress"
                         id="emailAddress"
-                        placeholder="devidjond45@gmail.com"
-                        defaultValue="devidjond45@gmail.com"
+                        placeholder="email"
+                        defaultValue="email"
                       />
                     </div>
                   </div>
@@ -144,8 +144,8 @@ const Settings = () => {
                       type="text"
                       name="Username"
                       id="Username"
-                      placeholder="devidjhon24"
-                      defaultValue="devidjhon24"
+                      placeholder="Username"
+                      defaultValue="Username"
                     />
                   </div>
 
@@ -194,7 +194,7 @@ const Settings = () => {
                         id="bio"
                         rows={6}
                         placeholder="Write your bio here"
-                        defaultValue="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque posuere fermentum urna, eu condimentum mauris tempus ut. Donec fermentum blandit aliquet."
+                        defaultValue="Write your bio here"
                       ></textarea>
                     </div>
                   </div>
@@ -229,7 +229,7 @@ const Settings = () => {
                   <div className="mb-4 flex items-center gap-3">
                     <div className="h-14 w-14 rounded-full">
                       <Image
-                        src={"/images/user/user-03.png"}
+                        src={"/images/user/user.png"}
                         width={55}
                         height={55}
                         alt="User"

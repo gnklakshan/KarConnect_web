@@ -905,7 +905,7 @@ const BookingPage: React.FC = () => {
               </div>
               <div className="mb-4 flex-1 md:mb-0">
                 <div className="text-primary-color text-2xl font-bold">
-                  Rs.{monthlyEarnings.toFixed(2)}
+                  Rs.0.00
                 </div>
                 <div>Monthly Earnings</div>
               </div>
